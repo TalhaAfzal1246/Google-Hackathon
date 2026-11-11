@@ -1,0 +1,147 @@
+[
+  {
+    "id": "buyer_lahore_metro",
+    "name": "Metro Cash & Carry Wholesale",
+    "name_ur": "میٹرو کیش اینڈ کیری",
+    "type": "Supermarket Chain",
+    "city": "Lahore",
+    "lat": 31.48,
+    "lng": 74.29,
+    "crops": [
+      "tomato",
+      "onion",
+      "potato"
+    ],
+    "min_qty_kg": 1000,
+    "max_qty_kg": 25000,
+    "ceiling_mult": 1.12,
+    "trust_score": 0.96,
+    "payment_terms": "Immediate T+1 Bank Transfer"
+  },
+  {
+    "id": "buyer_national_foods",
+    "name": "National Foods Processing Agro",
+    "name_ur": "نیشنل فوڈز لمیٹڈ",
+    "type": "Industrial Food Processor",
+    "city": "Karachi",
+    "lat": 24.8607,
+    "lng": 67.0011,
+    "crops": [
+      "onion",
+      "tomato"
+    ],
+    "min_qty_kg": 5000,
+    "max_qty_kg": 50000,
+    "ceiling_mult": 1.1,
+    "trust_score": 0.98,
+    "payment_terms": "Corporate Invoice 7-day"
+  },
+  {
+    "id": "buyer_shezan_juices",
+    "name": "Shezan International Pulps",
+    "name_ur": "شیزان انٹرنیشنل",
+    "type": "Paste & Pulp Processor",
+    "city": "Lahore",
+    "lat": 31.5497,
+    "lng": 74.3436,
+    "crops": [
+      "tomato"
+    ],
+    "min_qty_kg": 3000,
+    "max_qty_kg": 40000,
+    "ceiling_mult": 1.08,
+    "trust_score": 0.94,
+    "payment_terms": "Instant Digital Raast"
+  },
+  {
+    "id": "buyer_faisalabad_chips",
+    "name": "Punjab Agro Potato Crisp Co.",
+    "name_ur": "پنجاب ایگرو پوٹیٹو چپس",
+    "type": "Snack Processor",
+    "city": "Faisalabad",
+    "lat": 31.42,
+    "lng": 73.08,
+    "crops": [
+      "potato"
+    ],
+    "min_qty_kg": 4000,
+    "max_qty_kg": 30000,
+    "ceiling_mult": 1.14,
+    "trust_score": 0.92,
+    "payment_terms": "Cash on Mandi Gate"
+  },
+  {
+    "id": "buyer_multan_flour",
+    "name": "Al-Rehman Flour & Feed Mills",
+    "name_ur": "الرحمٰن فلور ملز",
+    "type": "Flour Milling Unit",
+    "city": "Multan",
+    "lat": 30.18,
+    "lng": 71.45,
+    "crops": [
+      "wheat"
+    ],
+    "min_qty_kg": 10000,
+    "max_qty_kg": 100000,
+    "ceiling_mult": 1.06,
+    "trust_score": 0.95,
+    "payment_terms": "Guaranteed Mandi Cheque"
+  },
+  {
+    "id": "buyer_matco_rice",
+    "name": "Falak Basmati Export Exporters",
+    "name_ur": "فلک باسمتی ایکسپورٹرز",
+    "type": "Commodity Exporter",
+    "city": "Karachi",
+    "lat": 24.87,
+    "lng": 67.05,
+    "crops": [
+      "rice_basmati"
+    ],
+    "min_qty_kg": 8000,
+    "max_qty_kg": 80000,
+    "ceiling_mult": 1.15,
+    "trust_score": 0.97,
+    "payment_terms": "Bank LC / Raast Direct"
+  },
+  {
+    "id": "buyer_freshly_retail",
+    "name": "Freshly Quick-Commerce Hub",
+    "name_ur": "فریشلی کوئیک کامرس",
+    "type": "Online Grocery",
+    "city": "Rawalpindi",
+    "lat": 33.6,
+    "lng": 73.05,
+    "crops": [
+      "tomato",
+      "onion",
+      "potato"
+    ],
+    "min_qty_kg": 500,
+    "max_qty_kg": 8000,
+    "ceiling_mult": 1.18,
+    "trust_score": 0.91,
+    "payment_terms": "Same-day Raast Transfer"
+  },
+  {
+    "id": "buyer_punjab_wholesaler_1",
+    "name": "Haji Ghulam Rasool & Sons (Arthi)",
+    "name_ur": "حاجی غلام رسول اینڈ سنز آڑھتی",
+    "type": "Licensed Commission Merchant",
+    "city": "Lahore",
+    "lat": 31.58,
+    "lng": 74.31,
+    "crops": [
+      "tomato",
+      "onion",
+      "potato",
+      "wheat",
+      "rice_basmati"
+    ],
+    "min_qty_kg": 2000,
+    "max_qty_kg": 50000,
+    "ceiling_mult": 1.05,
+    "trust_score": 0.88,
+    "payment_terms": "Mandi Token Advance + Cash"
+  }
+]

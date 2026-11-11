@@ -1,0 +1,26 @@
+{
+  "model_architecture": "Damped Trend + Seasonal Mandi Harmonics with Empirical Error Quantiles",
+  "sample_size_evaluated": 2925,
+  "evaluation_window_months": 6,
+  "metrics": {
+    "MAPE": 7.76,
+    "baseline_naive_MAPE": 12.57,
+    "MAE_PKR": 5.59,
+    "empirical_P10_P90_coverage_pct": 69.0,
+    "target_coverage_pct": 80.0
+  },
+  "crops_evaluated": [
+    "tomato",
+    "onion",
+    "potato",
+    "wheat",
+    "rice_basmati"
+  ],
+  "markets_evaluated": [
+    "lahore_badami_bagh",
+    "multan_ghalla",
+    "faisalabad_gole",
+    "karachi_superhighway",
+    "rawalpindi_i11"
+  ]
+}
