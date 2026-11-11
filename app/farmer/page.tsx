@@ -69,6 +69,22 @@ const MAUND_SHORTCUTS = [
 export default function FarmerPage() {
   const router = useRouter();
   const [lang, setLang] = useState<Language>("ur");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("preferred_lang") as Language;
+      if (saved === "en" || saved === "ur") {
+        setLang(saved);
+      }
+      const handleStorage = () => {
+        const updated = localStorage.getItem("preferred_lang") as Language;
+        if (updated) setLang(updated);
+      };
+      window.addEventListener("languageChange", handleStorage);
+      return () => window.removeEventListener("languageChange", handleStorage);
+    }
+  }, []);
+
   const t = DICTIONARY[lang];
   const isUrdu = lang === "ur";
 
@@ -648,6 +664,36 @@ export default function FarmerPage() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Next-Quarter Crop Planning Banner */}
+        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-emerald-700 text-slate-950 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-white/90 flex items-center justify-center shrink-0 shadow-xs">
+              <Calendar className="w-6 h-6 text-emerald-800" />
+            </div>
+            <div>
+              <div className="text-xs font-black uppercase tracking-wider text-amber-950">
+                {isUrdu ? "پیشگی زرعی منصوبہ بندی" : "Predictive Season Planning"}
+              </div>
+              <h3 className="text-base sm:text-lg font-black text-slate-950 mt-0.5">
+                {isUrdu ? "اگلی سہ ماہی کے لیے کون سی فصل سب سے زیادہ منافع دے گی؟" : "What crop should you plant next quarter for maximum profit?"}
+              </h3>
+              <p className="text-xs text-slate-900/80 font-medium mt-0.5">
+                {isUrdu
+                  ? "اپنے رقبے کے مطابق بیج، کھاد، ڈیزل کے اخراجات اور متوقع خالص منافع کا حساب لگائیں۔"
+                  : "Calculate per-acre seed, DAP fertilizer, diesel costs, and projected harvest profits for your land."}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => router.push("/planner")}
+            className="px-6 py-3 bg-slate-950 hover:bg-slate-900 text-white rounded-2xl text-xs sm:text-sm font-black shrink-0 shadow-md transition-all active:scale-95"
+          >
+            {isUrdu ? "اگلی فصل کا پلان بنائیں →" : "Open Crop Planner →"}
+          </button>
         </div>
 
         {/* COLLAPSIBLE ADVANCED ANALYTICS SECTION */}

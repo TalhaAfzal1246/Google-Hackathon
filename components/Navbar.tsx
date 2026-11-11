@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Language, DICTIONARY } from "@/lib/i18n";
-import { Sparkles, Sprout, Store, ShieldAlert, HelpCircle, Info } from "lucide-react";
+import { Sparkles, Sprout, Store, ShieldAlert, HelpCircle, Info, Calendar } from "lucide-react";
 import MarketTicker from "@/components/MarketTicker";
 
 interface NavbarProps {
@@ -16,8 +16,18 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
   const t = DICTIONARY[lang];
   const isUrdu = lang === "ur";
 
+  const handleToggle = () => {
+    const next = lang === "en" ? "ur" : "en";
+    if (typeof window !== "undefined") {
+      localStorage.setItem("preferred_lang", next);
+      window.dispatchEvent(new Event("languageChange"));
+    }
+    onToggleLang();
+  };
+
   const navLinks = [
     { href: "/farmer", label: isUrdu ? "کسان پورٹل" : "Farmer Portal", icon: Sprout },
+    { href: "/planner", label: isUrdu ? "اگلی فصل پلانر" : "Crop Planner", icon: Calendar },
     { href: "/market", label: isUrdu ? "منصفانہ منڈی" : "Live Exchange", icon: Store },
     { href: "/watchdog", label: isUrdu ? "آڑھتی واچ ڈاگ" : "Spread Watchdog", icon: ShieldAlert },
     { href: "/copilot", label: isUrdu ? "رسد و طلب AI" : "Supply & Demand AI", icon: HelpCircle },
@@ -81,8 +91,8 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
             </div>
 
             <button
-              onClick={onToggleLang}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold shadow-xs transition-all active:scale-95"
+              onClick={handleToggle}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
               title="Toggle Language"
             >
               <span>{lang === "en" ? "اردو (Urdu)" : "English"}</span>

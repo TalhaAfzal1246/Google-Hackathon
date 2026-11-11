@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Language, DICTIONARY } from "@/lib/i18n";
@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   HelpCircle,
+  Calendar,
 } from "lucide-react";
 
 const MANDI_PREVIEWS = [
@@ -28,7 +29,23 @@ const MANDI_PREVIEWS = [
 ];
 
 export default function HomePage() {
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLang] = useState<Language>("ur");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("preferred_lang") as Language;
+      if (saved === "en" || saved === "ur") {
+        setLang(saved);
+      }
+      const handleStorage = () => {
+        const updated = localStorage.getItem("preferred_lang") as Language;
+        if (updated) setLang(updated);
+      };
+      window.addEventListener("languageChange", handleStorage);
+      return () => window.removeEventListener("languageChange", handleStorage);
+    }
+  }, []);
+
   const t = DICTIONARY[lang];
   const isUrdu = lang === "ur";
 
@@ -64,8 +81,8 @@ export default function HomePage() {
 
           <p className="mt-4 text-sm sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
             {isUrdu
-              ? "آڑھتی مافیا اور کٹوتیوں سے نجات۔ سرکاری منڈی ریٹس کی بنیاد پر جانیے کہ اپنی فصل کب بیچنی ہے اور براہ راست خریداروں سے بہترین بھاؤ حاصل کریں۔"
-              : "Eliminate middleman exploitation and post-harvest distress sales. Empirical price forecasting, audio-guided harvest advisory, and direct verified buyer exchange."}
+              ? "آڑھتی مافیا اور کٹوتیوں سے نجات۔ سرکاری منڈی ریٹس کی بنیاد پر جانیے کہ اپنی فصل کب بیچنی ہے اور اگلی سہ ماہی کے لیے کون سی فصل سب سے زیادہ منافع بخش ہوگی۔"
+              : "Eliminate middleman exploitation and post-harvest distress sales. Empirical price forecasting, next-quarter crop planning, and direct verified buyer exchange."}
           </p>
 
           {/* Quick Crop Selector Pills */}
@@ -114,8 +131,16 @@ export default function HomePage() {
               className="flex items-center gap-2 px-6 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-white rounded-2xl font-black shadow-md shadow-emerald-800/20 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base"
             >
               <Sprout className="w-5 h-5 text-amber-300" />
-              <span>{isUrdu ? "🌾 سادہ کسان پورٹل کھولیں" : "🌾 Open Simple Farmer Portal"}</span>
+              <span>{isUrdu ? "🌾 کسان پورٹل (آج کا مشورہ)" : "🌾 Farmer Advisory Portal"}</span>
               <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+
+            <Link
+              href="/planner"
+              className="flex items-center gap-2 px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-2xl font-black shadow-md shadow-amber-500/20 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base"
+            >
+              <Calendar className="w-5 h-5 text-slate-950" />
+              <span>{isUrdu ? "📅 اگلی فصل کا پلانر (بہترین منافع)" : "📅 Next-Quarter Crop Planner"}</span>
             </Link>
 
             <Link
@@ -123,7 +148,7 @@ export default function HomePage() {
               className="flex items-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-extrabold shadow-md transition-all hover:scale-105 active:scale-95 text-sm sm:text-base"
             >
               <Store className="w-5 h-5 text-emerald-400" />
-              <span>{isUrdu ? "🛒 خریداروں کی منڈی دیکھیں" : "🛒 Browse Wholesale Exchange"}</span>
+              <span>{isUrdu ? "🛒 خریداروں کی منڈی" : "🛒 Browse Wholesale Exchange"}</span>
             </Link>
 
             <Link
@@ -161,77 +186,97 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3 Pillar Feature Cards */}
+      {/* 4 Feature Cards */}
       <section className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            {isUrdu ? "تین بنیادی انقلابی خصوصیات" : "Three Breakthrough Architectural Pillars"}
+            {isUrdu ? "بنیادی انقلابی خصوصیات" : "Breakthrough Architectural Pillars"}
           </h2>
           <p className="mt-2 text-sm text-slate-600 max-w-xl mx-auto font-medium">
             {isUrdu
-              ? "کسان کو زیادہ منافع، شفاف خریداری، اور درمیانے آڑھتی کے غیر منصفانہ مارجن کا سدباب۔"
+              ? "کسان کو زیادہ منافع، سیزن کی پیشگی منصوبہ بندی اور شفاف خریداری۔"
               : "Combining econometric time-series models with Google AI to guarantee transparency and economic justice."}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Card 1: Farmer Advisory */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-black text-slate-900 mb-2">
-                {isUrdu ? "1. کسان مشورہ اور ٹائم مشین" : "1. Predictive Harvest & Sale Advisory"}
+              <h3 className="text-base font-black text-slate-900 mb-2">
+                {isUrdu ? "1. کسان مشورہ اور ٹائم مشین" : "1. Predictive Harvest Advisory"}
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium mb-4">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-4">
                 {isUrdu
-                  ? "سرکاری منڈی ڈیٹا کی بنیاد پر معلوم کریں کہ آج بیچنا بہتر ہے یا روکنا۔ سٹوریج اور ضیاع کا حساب خودکار طور پر لگایا جاتا ہے۔"
-                  : "Forecasts empirical price quantiles over 3 to 30 day horizons. Balances cold storage, spoilage, and financing carry to declare optimal sale timing."}
+                  ? "سرکاری منڈی ڈیٹا کی بنیاد پر جانیں کہ آج بیچنا بہتر ہے یا روکنا۔ سٹوریج کا خرچ نکال کر فیصلہ۔"
+                  : "Empirical price quantiles over 3 to 30 day horizons. Balances storage & spoilage to declare optimal sale timing."}
               </p>
             </div>
             <Link href="/farmer" className="text-xs font-black text-emerald-800 hover:text-emerald-950 flex items-center gap-1">
-              <span>{isUrdu ? "کسان پورٹل دیکھیں →" : "Explore Advisory & Time Machine →"}</span>
+              <span>{isUrdu ? "کسان پورٹل دیکھیں →" : "Explore Advisory →"}</span>
             </Link>
           </div>
 
-          {/* Card 2 */}
+          {/* Card 2: Next-Quarter Crop Planner */}
+          <div className="bg-amber-50/60 rounded-3xl border-2 border-amber-300 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center mb-4">
+                <Calendar className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-black text-slate-950 mb-2">
+                {isUrdu ? "2. اگلی فصل پلانر (پیشگی منافع)" : "2. Next-Quarter Crop Planner"}
+              </h3>
+              <p className="text-xs text-slate-700 leading-relaxed font-medium mb-4">
+                {isUrdu
+                  ? "اپنے رقبے کے مطابق جانیں کہ اگلی سہ ماہی میں کون سی فصل سب سے زیادہ منافع دے گی۔ کھاد و بیج کا مکمل بجٹ۔"
+                  : "Personalized ROI engine recommending what to plant next season. Predicts harvest prices, input costs, and net margins."}
+              </p>
+            </div>
+            <Link href="/planner" className="text-xs font-black text-amber-900 hover:text-amber-950 flex items-center gap-1">
+              <span>{isUrdu ? "اگلی فصل کا پلان بنائیں →" : "Plan Next Season →"}</span>
+            </Link>
+          </div>
+
+          {/* Card 3: Autonomous Deal Room */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center mb-4">
                 <BrainCircuit className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-black text-slate-900 mb-2">
-                {isUrdu ? "2. براہ راست منصفانہ سودے بازی" : "2. Autonomous Bilateral Deal Room"}
+              <h3 className="text-base font-black text-slate-900 mb-2">
+                {isUrdu ? "3. براہ راست منصفانہ سودے بازی" : "3. Autonomous Deal Room"}
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium mb-4">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-4">
                 {isUrdu
-                  ? "آڑھتی کے بغیر براہ راست تصدیق شدہ بیوپاریوں اور سپر مارکیٹ چینز کے ساتھ منصفانہ ریٹ پر ڈیل فائنل کریں۔"
-                  : "Bilateral automated bargaining agent bounded strictly within the forecast-derived Fair Band [P25, P75]. Instant Raast settlement."}
+                  ? "آڑھتی کے بغیر براہ راست تصدیق شدہ بیوپاریوں کے ساتھ منصفانہ ریٹ پر ڈیل فائنل کریں۔"
+                  : "Bilateral automated bargaining agent bounded strictly within the forecast-derived Fair Band [P25, P75]."}
               </p>
             </div>
             <Link href="/market" className="text-xs font-black text-indigo-800 hover:text-indigo-950 flex items-center gap-1">
-              <span>{isUrdu ? "منصفانہ منڈی دیکھیں →" : "View Exchange & Deal Room →"}</span>
+              <span>{isUrdu ? "منصفانہ منڈی دیکھیں →" : "View Deal Room →"}</span>
             </Link>
           </div>
 
-          {/* Card 3 */}
+          {/* Card 4: Spread Watchdog */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center mb-4">
                 <Scale className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-black text-slate-900 mb-2">
-                {isUrdu ? "3. آڑھتی مارجن واچ ڈاگ" : "3. Middleman Margin Watchdog"}
+              <h3 className="text-base font-black text-slate-900 mb-2">
+                {isUrdu ? "4. آڑھتی مارجن واچ ڈاگ" : "4. Middleman Margin Watchdog"}
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium mb-4">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-4">
                 {isUrdu
                   ? "کسان کے ریٹ اور ریٹیل قیمت کے درمیان فرق کی جانچ، تاکہ ناجائز منافع خوری کا فوری پتہ چل سکے۔"
-                  : "Monitors the farmgate-to-retail price spread across Pakistani mandis to isolate and flag artificial middleman cartel gouging."}
+                  : "Monitors the farmgate-to-retail price spread across Pakistani mandis to flag artificial middleman cartel gouging."}
               </p>
             </div>
             <Link href="/watchdog" className="text-xs font-black text-rose-800 hover:text-rose-950 flex items-center gap-1">
-              <span>{isUrdu ? "واچ ڈاگ چیک کریں →" : "Inspect Spread Watchdog →"}</span>
+              <span>{isUrdu ? "واچ ڈاگ چیک کریں →" : "Inspect Watchdog →"}</span>
             </Link>
           </div>
         </div>
@@ -247,7 +292,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg sm:text-xl font-black">Built for Google Developer Groups Hackathon</h3>
               <p className="text-xs text-slate-400 mt-1 max-w-xl">
-                Integrated with Google AI (Gemini / Makerend GPT-6.1 Terra), Google Cloud, and Pakistan Agricultural AMIS Open Data.
+                Integrated with Google AI, Google Cloud, and Pakistan Agricultural AMIS Open Data.
               </p>
             </div>
 
@@ -258,7 +303,7 @@ export default function HomePage() {
               </span>
               <span className="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Deterministic Math Verification</span>
+                <span>PARC &amp; PBS Verified Budgets</span>
               </span>
               <span className="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
                 <ExternalLink className="w-3.5 h-3.5 text-teal-400" />

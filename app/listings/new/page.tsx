@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { Language, DICTIONARY } from "@/lib/i18n";
@@ -11,7 +11,21 @@ function ListingFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLang] = useState<Language>("ur");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("preferred_lang") as Language;
+      if (saved === "en" || saved === "ur") setLang(saved);
+      const handleStorage = () => {
+        const updated = localStorage.getItem("preferred_lang") as Language;
+        if (updated) setLang(updated);
+      };
+      window.addEventListener("languageChange", handleStorage);
+      return () => window.removeEventListener("languageChange", handleStorage);
+    }
+  }, []);
+
   const isUrdu = lang === "ur";
 
   const initialCrop = (searchParams.get("crop") as CropKey) || "tomato";

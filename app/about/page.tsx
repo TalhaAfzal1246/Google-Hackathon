@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Language, DICTIONARY } from "@/lib/i18n";
 import {
@@ -19,7 +19,21 @@ import {
 } from "lucide-react";
 
 export default function AboutPage() {
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLang] = useState<Language>("ur");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("preferred_lang") as Language;
+      if (saved === "en" || saved === "ur") setLang(saved);
+      const handleStorage = () => {
+        const updated = localStorage.getItem("preferred_lang") as Language;
+        if (updated) setLang(updated);
+      };
+      window.addEventListener("languageChange", handleStorage);
+      return () => window.removeEventListener("languageChange", handleStorage);
+    }
+  }, []);
+
   const isUrdu = lang === "ur";
   const [resetting, setResetting] = useState<boolean>(false);
   const [resetMessage, setResetMessage] = useState<string | null>(null);
