@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
+import VoiceAssistant from "@/components/VoiceAssistant";
 
 export const metadata: Metadata = {
   title: "Farm-to-Future | National Mandi Exchange & Harvest Advisory",
@@ -16,6 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-[#FAF7F2] text-[#1E2621] antialiased selection:bg-emerald-700 selection:text-white">
         {children}
+        <Suspense fallback={null}>
+          <VoiceAssistant />
+        </Suspense>
       </body>
     </html>
   );

@@ -18,6 +18,7 @@ import {
   Award,
   Layers,
   MapPin,
+  Mic,
 } from "lucide-react";
 
 const MANDI_PREVIEWS = [
@@ -128,8 +129,42 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Voice Command Hero Pill */}
+          <div className="mt-7 max-w-4xl mx-auto w-full">
+            <button
+              type="button"
+              onClick={() => {
+                const floatingBtn = document.getElementById("floating-voice-assistant-btn");
+                if (floatingBtn) floatingBtn.click();
+              }}
+              className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-[#0F3E2E] via-[#144E3A] to-[#0F3E2E] hover:from-[#144E3A] hover:to-[#0F3E2E] text-white rounded-2xl shadow-md border border-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-95 group text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="w-11 h-11 rounded-2xl bg-[#FBBF24] text-[#0F3E2E] flex items-center justify-center font-bold shrink-0 shadow-xs group-hover:scale-110 transition-transform">
+                  <Mic className="w-6 h-6 animate-pulse text-[#0F3E2E]" />
+                </span>
+                <div>
+                  <div className={`font-black text-sm sm:text-base text-white flex items-center gap-2 ${isUrdu ? "font-urdu" : ""}`}>
+                    <span>{isUrdu ? "صوتی معاون: بول کر تمام معلومات اور ریٹس حاصل کریں" : "Urdu Voice Command: Ask Anything with Your Voice"}</span>
+                    <span className="bg-[#FBBF24] text-[#0F3E2E] text-[10px] font-black px-2 py-0.5 rounded-md uppercase">Urdu Voice</span>
+                  </div>
+                  <p className={`text-xs text-[#A7D9C0] font-medium mt-0.5 ${isUrdu ? "font-urdu" : ""}`}>
+                    {isUrdu
+                      ? "ویب سائٹ کے ہر فیچر، منڈی ریٹس، فصل کب بیچیں یا اگلی فصل کون سی لگائیں — مائیک دبائیں اور پوچھیں"
+                      : "Instant spoken answers in Urdu about mandi rates, harvest timing, crop planning, or buyers"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold text-[#FBBF24] border border-white/20 shrink-0 transition-colors">
+                <span>{isUrdu ? "بول کر پوچھیں" : "Speak Query"}</span>
+                <Mic className="w-3.5 h-3.5" />
+              </div>
+            </button>
+          </div>
+
           {/* Perfectly Balanced 4 Action Buttons Grid */}
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-4xl mx-auto w-full">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-4xl mx-auto w-full">
             <Link
               href="/farmer"
               className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-2xl font-black shadow-md shadow-emerald-950/20 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm border border-[#0A2D21]"

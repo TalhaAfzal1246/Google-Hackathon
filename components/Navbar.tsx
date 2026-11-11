@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   TrendingUp,
   Languages,
+  Mic,
 } from "lucide-react";
 import MarketTicker from "@/components/MarketTicker";
 import BrandLogo from "@/components/BrandLogo";
@@ -76,14 +77,28 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
             })}
           </nav>
 
-          {/* Status & Language Toggle */}
-          <div className="flex items-center gap-2.5">
+          {/* Status, Voice & Language Toggle */}
+          <div className="flex items-center gap-2">
             {/* Established Institutional Verification Badge */}
             <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-bold text-[#0F3E2E] bg-[#E8F3EC] px-3 py-1.5 rounded-full border border-[#BDE0CB]">
               <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
               <span>{isUrdu ? "حکومتی منڈی ڈیٹا منسلک" : "AMIS Punjab Verified Feeds"}</span>
             </div>
+
+            {/* Voice Assistant Header Trigger */}
+            <button
+              id="navbar-voice-assistant-btn"
+              onClick={() => {
+                const floatingBtn = document.getElementById("floating-voice-assistant-btn");
+                if (floatingBtn) floatingBtn.click();
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FEFDFB] hover:bg-[#FAF8F3] text-[#0F3E2E] border border-[#BDE0CB] rounded-xl text-xs font-bold shadow-2xs transition-all active:scale-95 cursor-pointer"
+              title="صوتی معاون سے بول کر پوچھیں (Voice Command)"
+            >
+              <Mic className="w-3.5 h-3.5 text-emerald-700 animate-pulse" />
+              <span className={isUrdu ? "font-urdu text-xs" : ""}>{isUrdu ? "بول کر پوچھیں" : "Voice"}</span>
+            </button>
 
             {/* Language Switcher */}
             <button
