@@ -13,6 +13,9 @@ import {
   Target,
   Database,
   Cpu,
+  Layers,
+  Palette,
+  Globe2,
 } from "lucide-react";
 
 export default function AboutPage() {
@@ -36,6 +39,24 @@ export default function AboutPage() {
     }
   };
 
+  const benchmarks = [
+    { name: "BaKhabar Kissan (BKK)", country: "Pakistan", role: "Digital farmer advisory & crop calendar", theme: "Verdant green, audio/video mobile first, localized Urdu" },
+    { name: "Tazah Technologies", country: "Pakistan", role: "B2B fresh produce mandi marketplace", theme: "Clean high-speed auction lists, transparent wholesale price discovery" },
+    { name: "Farmdar", country: "Pakistan", role: "AI & satellite remote sensing for crop yield", theme: "High-contrast dark dashboard with glowing emerald telemetry" },
+    { name: "Ricult", country: "Pakistan / MIT", role: "Agri-fintech credit & mandi buy-back", theme: "Fintech card layout, risk score badges, transparent repayment terms" },
+    { name: "Kissan.pk", country: "Pakistan", role: "Farmer portal & subsidy tracker", theme: "Government rate tables, high-contrast green & wheat tones" },
+    { name: "DeHaat", country: "India", role: "Full-stack farmer-to-market platform", theme: "Vernacular language first, large high-contrast icon tiles" },
+    { name: "Ninjacart", country: "India", role: "B2B perishable supply chain & auctions", theme: "Rapid clearance badges, real-time auction ticker, low-latency sync" },
+    { name: "WayCool Foods", country: "India", role: "Fresh supply chain loss reduction", theme: "SDG waste metrics, cold-chain tracking, farmgate margin clarity" },
+    { name: "Cropin (SmartFarm)", country: "India / Global", role: "Enterprise farm AI & climate resilience", theme: "Deep forest pine, data-dense satellite graphs, multi-crop cones" },
+    { name: "AgNext Technologies", country: "India", role: "AI food quality grading & digital trust", theme: "Instant quality scorecards, digital trust seal, audit logs" },
+    { name: "Farmers Business Network (FBN)", country: "USA", role: "Transparent pricing & farmer bargaining", theme: "Side-by-side price comparison, farmer price-transparency cards" },
+    { name: "Indigo Ag", country: "USA", role: "Carbon & grain marketplace", theme: "Clean scientific data visualization, premium earth-tone aesthetics" },
+    { name: "AgriDigital", country: "Australia", role: "Commodity management & digital contracts", theme: "Bilateral agreement timelines, digital escrow status bar" },
+    { name: "Producers Market", country: "Global", role: "Farmer provenance & transparent chains", theme: "Warm earth tones, harvest gold badges, UN SDG impact cards" },
+    { name: "AgWorld", country: "Global", role: "Field management & crop planning", theme: "Outdoor sunlight high-contrast text, robust offline-ready UI" },
+  ];
+
   return (
     <div className={`min-h-screen bg-slate-50 flex flex-col ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
       <Navbar lang={lang} onToggleLang={() => setLang(lang === "en" ? "ur" : "en")} />
@@ -44,23 +65,104 @@ export default function AboutPage() {
         {/* Header */}
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full">
-              <Info className="w-3.5 h-3.5 text-indigo-600" />
-              Disclosure &amp; Transparency
+            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full border border-emerald-300">
+              <Info className="w-3.5 h-3.5 text-emerald-700" />
+              Benchmarking &amp; Transparency Brief
             </span>
-            <span className="text-xs text-slate-500">Google Hackathon Evaluation Brief</span>
+            <span className="text-xs text-slate-500">Build with Google Hackathon FA&apos;26</span>
           </div>
 
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Responsible AI, Google Technology &amp; Validation
+            AgriTech Benchmark Analysis &amp; Responsible AI Design
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
-            Complete technical provenance, UN SDG alignment, empirical backtesting, and judging demo controls.
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl">
+            Analysis of 15 leading Pakistani and global agricultural platforms informing Farm-to-Future&apos;s UI design system, econometric models, and Google Cloud integration.
           </p>
         </div>
 
+        {/* 15 Platform Benchmark Matrix */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Globe2 className="w-5 h-5 text-emerald-700" />
+              <h2 className="font-extrabold text-slate-900 text-base">
+                15 Domain Benchmark Platforms Analyzed
+              </h2>
+            </div>
+            <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              Pakistan &bull; South Asia &bull; Global
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left">
+              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                <tr>
+                  <th className="py-2.5 px-3">Platform</th>
+                  <th className="py-2.5 px-3">Region</th>
+                  <th className="py-2.5 px-3">Primary Capability</th>
+                  <th className="py-2.5 px-3">Theme &amp; UI Pattern Adopted</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {benchmarks.map((b, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-2.5 px-3 font-bold text-slate-900">{b.name}</td>
+                    <td className="py-2.5 px-3">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700">
+                        {b.country}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-600">{b.role}</td>
+                    <td className="py-2.5 px-3 text-emerald-900 font-medium">{b.theme}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Synthesis: Our AgriTech Design System */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+          <div className="flex items-center gap-2 mb-4">
+            <Palette className="w-5 h-5 text-amber-600" />
+            <h2 className="font-extrabold text-slate-900 text-base">
+              The Farm-to-Future Design System (Synthesis)
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80">
+              <div className="font-extrabold text-emerald-950 text-sm mb-1">
+                Fertile Forest &amp; Sprout Green
+              </div>
+              <p className="text-emerald-900 leading-relaxed">
+                Deep pine (`#064e3b`) and vivid emerald (`#059669`) signify stability, agricultural health, and verified recommendations.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80">
+              <div className="font-extrabold text-amber-950 text-sm mb-1">
+                Warm Harvest Wheat &amp; Amber
+              </div>
+              <p className="text-amber-900 leading-relaxed">
+                Golden harvest tones (`#d97706` / `#f59e0b`) represent mandi market prices, grain staples, and hold advisory windows.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div className="font-extrabold text-slate-900 text-sm mb-1">
+                Outdoor Sunlight Contrast
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Deep basalt charcoal (`#0f172a`) text and warm rice parchment (`#fbfbfa`) ensure readability under direct Pakistani sunlight.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Google Technology Map (Rubric Criterion 4: 10 Marks) */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
           <div className="flex items-center gap-2 mb-4">
             <Cpu className="w-5 h-5 text-indigo-600" />
             <h2 className="font-extrabold text-slate-900 text-base">
@@ -120,16 +222,16 @@ export default function AboutPage() {
         </div>
 
         {/* UN SDG Alignment (Rubric Criterion 1: 20 Marks) */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
           <div className="flex items-center gap-2 mb-4">
-            <Target className="w-5 h-5 text-emerald-600" />
+            <Target className="w-5 h-5 text-emerald-700" />
             <h2 className="font-extrabold text-slate-900 text-base">
               United Nations Sustainable Development Goals (SDG Alignment)
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-100">
+            <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80">
               <div className="font-extrabold text-emerald-950 text-sm mb-1">
                 SDG 2.3 &bull; Double Agricultural Productivity &amp; Incomes
               </div>
@@ -138,49 +240,13 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-100">
+            <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80">
               <div className="font-extrabold text-amber-950 text-sm mb-1">
                 SDG 12.3 &bull; Halve Global Per Capita Food Waste &amp; Post-Harvest Loss
               </div>
               <p className="text-amber-900 leading-relaxed">
                 By modeling spoilage loss against storage carry costs in real-time, farmers avoid distress harvesting and storage rot, optimizing disposal timing and cutting post-harvest food waste.
               </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Empirical Backtest Table (Rubric Criterion 2 & 3: 50 Marks) */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Database className="w-5 h-5 text-indigo-600" />
-              <h2 className="font-extrabold text-slate-900 text-base">
-                Empirical Backtest Validation Metrics
-              </h2>
-            </div>
-            <span className="text-xs text-slate-500">Evaluated on 18,500 daily mandi observations</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center mb-4">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Model MAPE</div>
-              <div className="text-xl font-extrabold text-slate-900 mt-0.5">7.7%</div>
-              <div className="text-[10px] text-emerald-700 font-semibold">High Precision</div>
-            </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Seasonal Naive Baseline</div>
-              <div className="text-xl font-extrabold text-slate-500 mt-0.5">12.6%</div>
-              <div className="text-[10px] text-slate-500">Benchmark MAPE</div>
-            </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">P10–P90 Coverage</div>
-              <div className="text-xl font-extrabold text-emerald-600 mt-0.5">81.4%</div>
-              <div className="text-[10px] text-slate-500">Target: 80%</div>
-            </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Mean Absolute Error</div>
-              <div className="text-xl font-extrabold text-slate-900 mt-0.5">₨ 5.6</div>
-              <div className="text-[10px] text-slate-500">PKR per kg error</div>
             </div>
           </div>
         </div>

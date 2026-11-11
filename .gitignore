@@ -16,6 +16,7 @@ dist/
 build/
 .next/
 out/
+.vercel/
 
 # IDE & Editor
 .vscode/
