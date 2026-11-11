@@ -149,8 +149,8 @@ export default function DemandSupplyCopilot({
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-500">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-              <span>Powered by Gemini 3.8 Flash</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>Powered by GPT-6.1 Terra</span>
             </div>
           </div>
 

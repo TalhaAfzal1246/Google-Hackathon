@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { geminiJSON } from "@/lib/gemini";
+import { aiJSON } from "@/lib/ai";
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,7 +46,7 @@ Provide the economic breakdown.`;
       riskFactor: "Unseasonal weather fluctuations impacting transit time and post-harvest spoilage.",
     };
 
-    const { data, usedAI } = await geminiJSON<typeof fallback>(
+    const { data, usedAI, model } = await aiJSON<typeof fallback>(
       systemPrompt,
       userPrompt,
       fallback
@@ -55,6 +55,7 @@ Provide the economic breakdown.`;
     return NextResponse.json({
       ...data,
       usedAI,
+      model,
     });
   } catch (err) {
     console.error("Copilot error:", err);
@@ -66,6 +67,7 @@ Provide the economic breakdown.`;
         marketOutlook: "Stable / Balanced",
         riskFactor: "Transport cost fluctuations.",
         usedAI: false,
+        model: "gpt-6.1-terra",
       },
       { status: 200 }
     );

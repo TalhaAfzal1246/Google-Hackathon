@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { computeNegotiationStep } from "@/lib/negotiation";
-import { geminiJSON } from "@/lib/gemini";
+import { aiJSON } from "@/lib/ai";
 import { numbersMatch } from "@/lib/validate";
 
 export async function POST(req: NextRequest) {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       Number(round),
     ].filter((n) => !isNaN(n));
 
-    // 2. Gemini generates realistic dialogue for this turn
+    // 2. AI generates realistic dialogue for this turn
     const systemPrompt = `You are a Fair-Trade Agricultural Auction Facilitator in Pakistan.
 Generate a realistic, respectful bilateral exchange between a verified smallholder farmer and a commercial wholesale buyer.
 Constraints:
@@ -73,7 +73,7 @@ Status: ${stepResult.isDeal ? "Deal Reached" : "In Progress"}`;
       rationalNotes: `Concession step in round ${round} brings spread to ₨ ${Math.abs(stepResult.farmerOffer - stepResult.buyerOffer)}/kg.`,
     };
 
-    const { data, usedAI } = await geminiJSON<typeof fallback>(
+    const { data, usedAI, model } = await aiJSON<typeof fallback>(
       systemPrompt,
       userPrompt,
       fallback
@@ -89,6 +89,7 @@ Status: ${stepResult.isDeal ? "Deal Reached" : "In Progress"}`;
       dialogue: data,
       usedAI,
       verified,
+      model,
     });
   } catch (error) {
     console.error("Negotiate step error:", error);
@@ -106,6 +107,7 @@ Status: ${stepResult.isDeal ? "Deal Reached" : "In Progress"}`;
         },
         usedAI: false,
         verified: true,
+        model: "gpt-6.1-terra",
       },
       { status: 200 }
     );

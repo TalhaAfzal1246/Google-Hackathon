@@ -72,7 +72,7 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
         <div className="flex items-center gap-2.5">
           <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-semibold text-emerald-900 bg-emerald-50/90 px-3 py-1 rounded-full border border-emerald-200">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Gemini 3.8 Flash</span>
+            <span>GPT-6.1 Terra</span>
           </div>
 
           <button

@@ -38,7 +38,7 @@ export default function ExplainPanel({
               {t.explanationTitle}
             </h3>
             <p className="text-[11px] text-slate-500">
-              Econometric reasoning synthesized by Google Gemini
+              Econometric reasoning synthesized by GPT-6.1 Terra
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function ExplainPanel({
         <div className="py-8 flex flex-col items-center justify-center text-center">
           <div className="w-7 h-7 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-2" />
           <p className="text-xs text-slate-500">
-            Consulting Gemini 3.8 Flash with mandi arrivals and historical quantiles...
+            Consulting GPT-6.1 Terra with mandi arrivals and historical quantiles...
           </p>
         </div>
       ) : explanation ? (

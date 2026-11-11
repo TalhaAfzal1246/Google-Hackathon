@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { geminiJSON } from "@/lib/gemini";
+import { aiJSON } from "@/lib/ai";
 import { numbersMatch } from "@/lib/validate";
 
 export async function POST(req: NextRequest) {
@@ -70,7 +70,7 @@ Daily Spoilage Loss: ${spoilRate}%/day`;
       ],
     };
 
-    const { data, usedAI } = await geminiJSON<typeof fallback>(
+    const { data, usedAI, model } = await aiJSON<typeof fallback>(
       systemPrompt,
       userPrompt,
       fallback
@@ -84,6 +84,7 @@ Daily Spoilage Loss: ${spoilRate}%/day`;
       ...data,
       usedAI,
       verified,
+      model,
     });
   } catch (error) {
     console.error("Explain route error:", error);
@@ -98,6 +99,7 @@ Daily Spoilage Loss: ${spoilRate}%/day`;
         ],
         usedAI: false,
         verified: true,
+        model: "gpt-6.1-terra",
       },
       { status: 200 }
     );
