@@ -99,7 +99,7 @@ Daily Spoilage Loss: ${spoilRate}%/day`;
         ],
         usedAI: false,
         verified: true,
-        model: "gpt-6.1-terra",
+        model: "gemini-3.8-flash",
       },
       { status: 200 }
     );

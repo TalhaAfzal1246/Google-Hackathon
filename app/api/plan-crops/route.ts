@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const recommendations = computeCropPlan(inputs);
 
-    // Call GPT-6.1 Terra / Gemini for regional agronomist synthesis
+    // Call Google Gemini / AI for regional agronomist synthesis
     const topCrop = recommendations[0];
     const systemPrompt = `You are Pakistan's Chief Agricultural Planning Specialist advising a smallholder farmer.
 You possess deep field expertise in:

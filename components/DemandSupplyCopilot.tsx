@@ -186,7 +186,7 @@ export default function DemandSupplyCopilot({
 
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-200 font-semibold">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>GPT-6.1 Terra</span>
+          <span>Google Gemini</span>
         </div>
       </div>
 

@@ -67,7 +67,7 @@ Provide the economic breakdown.`;
         marketOutlook: "Stable / Balanced",
         riskFactor: "Transport cost fluctuations.",
         usedAI: false,
-        model: "gpt-6.1-terra",
+        model: "gemini-3.8-flash",
       },
       { status: 200 }
     );

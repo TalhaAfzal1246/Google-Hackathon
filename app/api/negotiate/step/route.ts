@@ -107,7 +107,7 @@ Status: ${stepResult.isDeal ? "Deal Reached" : "In Progress"}`;
         },
         usedAI: false,
         verified: true,
-        model: "gpt-6.1-terra",
+        model: "gemini-3.8-flash",
       },
       { status: 200 }
     );

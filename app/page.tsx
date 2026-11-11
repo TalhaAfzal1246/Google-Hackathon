@@ -299,7 +299,7 @@ export default function HomePage() {
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Google Gemini / GPT-6.1 Terra</span>
+                <span>Google Gemini AI</span>
               </span>
               <span className="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />

@@ -540,7 +540,7 @@ export default function FarmerPage() {
                     {isUrdu ? "کسان کے لیے آسان 3 نکاتی خلاصہ" : "Plain 3-Point Actionable Advice"}
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    AI Econometric Guidance &bull; GPT-6.1 Terra
+                    AI Econometric Guidance &bull; Google Gemini
                   </p>
                 </div>
               </div>
