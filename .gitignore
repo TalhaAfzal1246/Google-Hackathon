@@ -24,6 +24,8 @@ out/
 *.swp
 *.swo
 
-# OS files
+# OS & Upload files
 .DS_Store
 Thumbs.db
+*.pdf
+
