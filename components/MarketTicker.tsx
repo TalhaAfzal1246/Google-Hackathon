@@ -21,11 +21,11 @@ export default function MarketTicker({ lang }: MarketTickerProps) {
   const isUrdu = lang === "ur";
 
   return (
-    <div className="bg-emerald-950 text-white border-b border-emerald-900/60 overflow-hidden py-2 px-3 text-xs select-none">
+    <div className="bg-[#092418] text-white border-b border-[#14422D] overflow-hidden py-2 px-3 text-xs select-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         {/* Source Badge */}
-        <div className="flex items-center gap-1.5 shrink-0 bg-emerald-900/80 px-2.5 py-1 rounded-md text-[11px] font-semibold text-emerald-200 border border-emerald-700/50">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center gap-1.5 shrink-0 bg-[#123E2A] px-2.5 py-1 rounded-md text-[11px] font-bold text-[#A7D9C0] border border-[#1F5C3E]">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#FBBF24]" />
           <span>
             {isUrdu ? "آج کے مصدقہ منڈی ریٹ (AMIS پنجاب)" : "Live Official Mandi Bulletin (AMIS / PBS)"}
           </span>
@@ -35,12 +35,12 @@ export default function MarketTicker({ lang }: MarketTickerProps) {
         <div className="flex items-center gap-6 overflow-x-auto no-scrollbar py-0.5">
           {LIVE_MANDI_ITEMS.map((item, idx) => (
             <div key={idx} className="flex items-center gap-2 shrink-0 text-[11px]">
-              <span className="font-medium text-slate-300">{item.crop}:</span>
-              <span className="font-extrabold text-amber-300">{item.rate}</span>
-              <span className="text-slate-400 font-semibold">({item.maund})</span>
+              <span className="font-semibold text-[#D1E7DD]">{item.crop}:</span>
+              <span className="font-black text-[#FDE68A]">{item.rate}</span>
+              <span className="text-[#A7D9C0] font-semibold">({item.maund})</span>
               <span
-                className={`inline-flex items-center font-bold text-[10px] px-1 rounded ${
-                  item.up ? "text-emerald-400 bg-emerald-950/60" : "text-rose-400 bg-rose-950/60"
+                className={`inline-flex items-center font-bold text-[10px] px-1.5 py-0.5 rounded ${
+                  item.up ? "text-emerald-300 bg-emerald-950/80" : "text-rose-300 bg-rose-950/80"
                 }`}
               >
                 {item.change}

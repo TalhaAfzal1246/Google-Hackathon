@@ -85,27 +85,27 @@ export default function FanChart({
   }, [history, horizons, asOfDate, showReplay]);
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+    <div className="w-full bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
         <div>
-          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+          <h3 className="font-extrabold text-[#14231B] text-base flex items-center gap-2">
             Mandi Price Trajectory & Empirical Uncertainty Cone
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#55695C] font-medium">
             Solid line shows historical arrivals; shaded fan indicates P10–P90 empirical statistical confidence bounds.
           </p>
         </div>
         <div className="flex items-center gap-3 text-xs">
-          <span className="flex items-center gap-1.5 text-slate-600">
-            <span className="w-3 h-3 rounded-full bg-emerald-600 inline-block" />
+          <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
+            <span className="w-3 h-3 rounded-full bg-[#0F3E2E] inline-block" />
             P50 Median
           </span>
-          <span className="flex items-center gap-1.5 text-slate-600">
-            <span className="w-3 h-3 rounded bg-emerald-100 border border-emerald-300 inline-block" />
+          <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
+            <span className="w-3 h-3 rounded bg-[#E8F3EC] border border-[#BDE0CB] inline-block" />
             Fair Band (P25-P75)
           </span>
           {showReplay && (
-            <span className="flex items-center gap-1.5 text-rose-600 font-semibold">
+            <span className="flex items-center gap-1.5 text-rose-700 font-bold">
               <span className="w-3 h-0.5 bg-rose-500 inline-block" />
               Realized Market Reality
             </span>

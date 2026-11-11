@@ -41,13 +41,13 @@ export default function SpreadChart({
   }, [records]);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+    <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
         <div>
-          <h3 className="font-bold text-slate-900 text-sm">
+          <h3 className="font-black text-[#14231B] text-sm sm:text-base">
             Farmgate to Retail Mandi Spread Monitor (60-Day Window)
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#55695C] font-medium">
             Click on any anomaly point (highlighted in red) to inspect the middleman cost decomposition.
           </p>
         </div>

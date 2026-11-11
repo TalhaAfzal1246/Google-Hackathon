@@ -23,25 +23,25 @@ export default function ReplayReveal({
   const totalPreservedPkr = Math.round(gain * qtyKg);
 
   return (
-    <div className="bg-slate-900 text-white rounded-2xl p-5 shadow-sm border border-slate-800">
+    <div className="bg-[#0C2419] text-white rounded-3xl p-5 sm:p-6 shadow-sm border border-[#1E523A]">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
-              <Sparkles className="w-3 h-3" />
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider bg-[#143B2A] text-[#FDE68A] px-2.5 py-0.5 rounded-full border border-[#2A6B4C]">
+              <TrendingUp className="w-3 h-3 text-[#FBBF24]" />
               {t.timeMachineTitle}
             </span>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[#A7D9C0]">
               Historical Backtest Validation
             </span>
           </div>
-          <h3 className="font-bold text-base text-white">
+          <h3 className="font-black text-base text-white">
             {showReplay
               ? "Actual Historical Market Realization Revealed"
               : "Verify Algorithm Against Historical Market Truth"}
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5 max-w-xl">
-            Compare the AI harvest advice against what actually occurred in the mandi over the subsequent 30 days.
+          <p className="text-xs text-[#A7D9C0] mt-0.5 max-w-xl font-medium">
+            Compare the statistical harvest advice against what actually occurred in the mandi over the subsequent 30 days.
           </p>
         </div>
 

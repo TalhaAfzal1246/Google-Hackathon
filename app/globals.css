@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbfbfa;
-  --foreground: #0f172a;
-  --primary-forest: #064e3b;
-  --primary-emerald: #059669;
-  --accent-gold: #d97706;
-  --surface-card: #ffffff;
+  --background: #FAF7F2;
+  --foreground: #1E2621;
+  --primary-forest: #0F3E2E;
+  --primary-emerald: #134E35;
+  --accent-gold: #C27803;
+  --accent-amber: #D97706;
+  --surface-cream: #FEFDFB;
+  --surface-card: #FFFFFF;
+  --border-warm: #EAE4D8;
 }
 
 body {
@@ -16,55 +19,57 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Authentic Urdu Nastaliq Typography */
+/* Authentic Urdu Nastaliq & Regional Typography */
 .font-urdu {
   font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Nafees Nastaleeq", Tahoma, Arial, sans-serif;
-  line-height: 2.2;
+  line-height: 2.1;
 }
 
-/* AgriTech Custom Component Utilities */
+/* Organic Warm Agricultural Cards */
 .agri-card {
-  background: #ffffff;
-  border: 1px solid rgba(16, 185, 129, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  background: #FEFDFB;
+  border: 1px solid #EAE4D8;
+  box-shadow: 0 1px 3px 0 rgba(40, 30, 15, 0.04), 0 1px 2px -1px rgba(40, 30, 15, 0.03);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .agri-card:hover {
-  border-color: rgba(16, 185, 129, 0.24);
-  box-shadow: 0 4px 12px 0 rgba(16, 185, 129, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border-color: #D6CEBF;
+  box-shadow: 0 4px 14px 0 rgba(40, 30, 15, 0.07), 0 2px 4px -2px rgba(40, 30, 15, 0.04);
 }
 
-.agri-glass {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+.cream-card {
+  background-color: #FEFDFB;
+  border: 1px solid #EAE4D8;
+}
+
+.cream-surface {
+  background-color: #F5EFEB;
 }
 
 .harvest-badge {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  color: #92400e;
-  border: 1px solid #fcd34d;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  color: #853E06;
+  border: 1px solid #FCD34D;
 }
 
 .forest-badge {
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  color: #064E3B;
+  border: 1px solid #A7F3D0;
 }
 
-/* Custom Scrollbar for Mandi feeds */
+/* Custom Scrollbar with Warm Harvest Tones */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #F3ECE2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #D8CEBE;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #B8AC98;
 }

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Farm-to-Future | AI Mandi Forecaster & Fair-Trade Exchange",
+  title: "Farm-to-Future | National Mandi Exchange & Harvest Advisory",
   description:
-    "AI-powered predictive harvest advisory, bilateral fair-trade negotiation room, and middleman spread watchdog for Pakistani agriculture.",
+    "Pakistan's Premier Agricultural Commodity Platform. Real-time AMIS & PBS Mandi prices, optimal harvest timing, next-quarter crop planning, and direct grower-to-buyer transparent trading.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
+      <body className="min-h-screen bg-[#FAF7F2] text-[#1E2621] antialiased selection:bg-emerald-700 selection:text-white">
         {children}
       </body>
     </html>

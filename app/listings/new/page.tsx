@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { Language, DICTIONARY } from "@/lib/i18n";
 import { CropKey, MarketKey } from "@/lib/types";
-import { Sprout, MapPin, Scale, Tag, ArrowRight, ShieldCheck } from "lucide-react";
+import { Sprout, MapPin, Scale, Tag, ArrowRight, ArrowLeft, ShieldCheck } from "lucide-react";
 
 function ListingFormContent() {
   const router = useRouter();
@@ -27,6 +27,7 @@ function ListingFormContent() {
   }, []);
 
   const isUrdu = lang === "ur";
+  const ArrowIcon = isUrdu ? ArrowLeft : ArrowRight;
 
   const initialCrop = (searchParams.get("crop") as CropKey) || "tomato";
   const initialMarket = (searchParams.get("market") as MarketKey) || "lahore_badami_bagh";
@@ -52,7 +53,7 @@ function ListingFormContent() {
           farmerName,
           crop,
           cropName: crop.toUpperCase(),
-          cropNameUr: crop === "tomato" ? "ٹماٹر" : crop === "onion" ? "پیاز" : "آلو",
+          cropNameUr: crop === "tomato" ? "ٹماٹر" : crop === "onion" ? "پیاز" : crop === "potato" ? "آلو" : crop === "wheat" ? "گندم" : "چاول",
           market,
           marketName: market === "lahore_badami_bagh" ? "Lahore (Badami Bagh)" : market,
           qtyKg,
@@ -72,49 +73,48 @@ function ListingFormContent() {
   };
 
   return (
-    <div className={`min-h-screen bg-slate-50 flex flex-col ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
+    <div className={`min-h-screen bg-[#FAF7F2] text-[#1E2621] flex flex-col ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
       <Navbar lang={lang} onToggleLang={() => setLang(lang === "en" ? "ur" : "en")} />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-6 sm:p-8 shadow-xs">
           <div className="flex items-center gap-2 mb-2">
-            <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Verified Mandi Direct Listing
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold bg-[#E8F3EC] text-[#0F3E2E] px-3 py-1 rounded-full border border-[#BDE0CB]">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>{isUrdu ? "مصدقہ منڈی لسٹنگ" : "Verified Mandi Direct Listing"}</span>
             </span>
           </div>
 
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-black text-[#14231B] tracking-tight">
             {isUrdu ? "منصفانہ منڈی میں فصل فروخت کے لیے پیش کریں" : "List Harvest Batch for Fair Trade"}
           </h1>
-          <p className="text-xs text-slate-500 mt-1 mb-6">
+          <p className="text-xs text-[#55695C] mt-1 mb-6 font-medium">
             Pre-filled with statistical floor price and quantity from your predictive harvest advisory.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Farmer / Farm Identity
+              <label className="block text-xs font-bold text-[#14231B] mb-1">
+                {isUrdu ? "کسان / فارم کا نام" : "Farmer / Farm Identity"}
               </label>
               <input
                 type="text"
                 value={farmerName}
                 onChange={(e) => setFarmerName(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-                  <Sprout className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Harvest Crop</span>
+                <label className="block text-xs font-bold text-[#14231B] mb-1">
+                  {isUrdu ? "فصل" : "Produce Crop"}
                 </label>
                 <select
                   value={crop}
                   onChange={(e) => setCrop(e.target.value as CropKey)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-semibold text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
                 >
                   <option value="tomato">Tomato / ٹماٹر</option>
                   <option value="onion">Onion / پیاز</option>
@@ -125,14 +125,13 @@ function ListingFormContent() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Delivery Mandi</span>
+                <label className="block text-xs font-bold text-[#14231B] mb-1">
+                  {isUrdu ? "ہدف منڈی" : "Target Mandi"}
                 </label>
                 <select
                   value={market}
                   onChange={(e) => setMarket(e.target.value as MarketKey)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-semibold text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
                 >
                   <option value="lahore_badami_bagh">Lahore (Badami Bagh)</option>
                   <option value="multan_ghalla">Multan (Ghalla Mandi)</option>
@@ -145,58 +144,51 @@ function ListingFormContent() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-                  <Scale className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Total Harvest Volume (kg)</span>
+                <label className="block text-xs font-bold text-[#14231B] mb-1">
+                  {isUrdu ? "مقدار (کلوگرام)" : "Volume (kg)"}
                 </label>
                 <input
                   type="number"
-                  min={500}
-                  max={100000}
-                  step={500}
+                  min={100}
+                  step={40}
                   value={qtyKg}
                   onChange={(e) => setQtyKg(Number(e.target.value))}
                   required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-black text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Floor Reservation Price (₨/kg)</span>
+                <label className="block text-xs font-bold text-[#14231B] mb-1">
+                  {isUrdu ? "کم سے کم محفوظ قیمت (روپے فی کلو)" : "Floor Price (PKR / kg)"}
                 </label>
                 <input
                   type="number"
-                  min={10}
-                  max={500}
-                  step={1}
+                  min={1}
+                  step={0.5}
                   value={floorPrice}
                   onChange={(e) => setFloorPrice(Number(e.target.value))}
                   required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-black text-[#0F3E2E] focus:outline-none focus:ring-2 focus:ring-emerald-700"
                 />
               </div>
             </div>
 
-            <div className="p-3 bg-emerald-50/70 border border-emerald-100 rounded-xl text-xs text-emerald-900">
-              <strong>Guaranteed Protection:</strong> Your autonomous negotiation agent will strictly refuse any offers below your floor price of ₨ {floorPrice}/kg.
+            <div className="pt-4">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-3.5 bg-[#0F3E2E] hover:bg-[#144E3A] disabled:bg-[#BAC6BF] text-white rounded-2xl text-xs sm:text-sm font-black shadow-xs transition-all active:scale-95 flex items-center justify-center gap-2 border border-[#0A2D21]"
+              >
+                {submitting ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Sprout className="w-4 h-4 text-[#FBBF24]" />
+                )}
+                <span>{isUrdu ? "فصل منڈی میں لسٹ کریں" : "Publish to Wholesale Exchange"}</span>
+                <ArrowIcon className="w-4 h-4" />
+              </button>
             </div>
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
-            >
-              {submitting ? (
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span>Publish to Fair-Trade Marketplace</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
           </form>
         </div>
       </main>
@@ -204,9 +196,9 @@ function ListingFormContent() {
   );
 }
 
-export default function ListingFormPage() {
+export default function NewListingPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-xs">Loading form...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-xs text-slate-500">Loading form...</div>}>
       <ListingFormContent />
     </Suspense>
   );

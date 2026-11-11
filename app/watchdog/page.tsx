@@ -7,7 +7,7 @@ import DecompositionBar from "@/components/DecompositionBar";
 import { Language, DICTIONARY } from "@/lib/i18n";
 import { CropKey, MarketKey, MarketRecord } from "@/lib/types";
 import { decomposeSpread, SpreadDecomposition } from "@/lib/spread";
-import { ShieldAlert, AlertTriangle, Filter, Info, Sprout, MapPin } from "lucide-react";
+import { ShieldAlert, Sprout, MapPin, Scale, Search, ShieldCheck } from "lucide-react";
 
 export default function WatchdogPage() {
   const [lang, setLang] = useState<Language>("ur");
@@ -77,37 +77,40 @@ export default function WatchdogPage() {
   }, [selectedRecord]);
 
   return (
-    <div className={`min-h-screen bg-slate-50 flex flex-col ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
+    <div className={`min-h-screen bg-[#FAF7F2] text-[#1E2621] flex flex-col ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
       <Navbar lang={lang} onToggleLang={() => setLang(lang === "en" ? "ur" : "en")} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
         {/* Header */}
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider bg-[#FEE2E2] text-[#991B1B] px-3 py-1 rounded-full border border-[#FECACA]">
               <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
-              Middleman Anomaly Monitor
+              <span>{isUrdu ? "آڑھتی کٹوتی و منافع مانیٹر" : "Middleman Spread Monitor"}</span>
             </span>
-            <span className="text-xs text-slate-500">Autonomous Cartel Detection</span>
+            <span className="text-xs text-[#55695C] font-semibold flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Statistical Spread Audit</span>
+            </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {isUrdu ? "آڑھتی و درمیانی منافع خوری واچ ڈاگ" : "Farmgate-to-Retail Spread Watchdog"}
+          <h1 className="text-2xl sm:text-3xl font-black text-[#14231B] tracking-tight">
+            {t.watchdogTitle}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
-            Flags price gouging where retail consumer prices spike while farmer farmgate remuneration stays depressed.
+          <p className="text-xs sm:text-sm text-[#55695C] mt-1 max-w-2xl font-medium">
+            {t.watchdogSubtitle}
           </p>
         </div>
 
-        {/* Filter Controls */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-wrap items-center gap-4">
+        {/* Filter Controls (Warm Cream Surface) */}
+        <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-4 sm:p-5 shadow-xs flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <Sprout className="w-4 h-4 text-emerald-600" />
-            <span className="text-xs font-semibold text-slate-700">Crop:</span>
+            <Sprout className="w-4 h-4 text-emerald-700" />
+            <span className="text-xs font-bold text-[#14231B]">{isUrdu ? "فصل:" : "Crop:"}</span>
             <select
               value={selectedCrop}
               onChange={(e) => setSelectedCrop(e.target.value as CropKey)}
-              className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900"
+              className="bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3 py-1.5 text-xs font-bold text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
             >
               <option value="tomato">Tomato / ٹماٹر</option>
               <option value="onion">Onion / پیاز</option>
@@ -118,12 +121,12 @@ export default function WatchdogPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-emerald-600" />
-            <span className="text-xs font-semibold text-slate-700">Market Hub:</span>
+            <MapPin className="w-4 h-4 text-emerald-700" />
+            <span className="text-xs font-bold text-[#14231B]">{isUrdu ? "منڈی ہب:" : "Market Hub:"}</span>
             <select
               value={selectedMarket}
               onChange={(e) => setSelectedMarket(e.target.value as MarketKey)}
-              className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900"
+              className="bg-[#FAF8F3] border border-[#DCD3C3] rounded-xl px-3 py-1.5 text-xs font-bold text-[#14231B] focus:outline-none focus:ring-2 focus:ring-emerald-700"
             >
               <option value="lahore_badami_bagh">Lahore (Badami Bagh)</option>
               <option value="multan_ghalla">Multan (Ghalla Mandi)</option>
@@ -134,9 +137,9 @@ export default function WatchdogPage() {
           </div>
 
           <div className="ml-auto flex items-center gap-2 text-xs">
-            <span className="text-slate-500">Flagged Anomalies:</span>
-            <span className="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-              {anomalyEpisodes.length} Episodes
+            <span className="text-[#55695C] font-semibold">{isUrdu ? "نشان زدہ غیر معمولی منافع:" : "Flagged Episodes:"}</span>
+            <span className="font-black text-[#991B1B] bg-[#FEE2E2] px-3 py-1 rounded-full border border-[#FECACA]">
+              {anomalyEpisodes.length} {isUrdu ? "واقعات" : "Episodes"}
             </span>
           </div>
         </div>
@@ -159,34 +162,34 @@ export default function WatchdogPage() {
         )}
 
         {/* Anomaly Episode Table */}
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900 text-sm">
-              Detected Spread Discrepancies &amp; Gouging Episodes
+        <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] overflow-hidden shadow-xs">
+          <div className="px-5 py-4 bg-[#FAF8F3] border-b border-[#EAE4D8] flex items-center justify-between">
+            <h3 className="font-black text-[#14231B] text-sm sm:text-base">
+              {isUrdu ? "غیر معمولی منافع خوری و قیمتوں کا تفصیلی ریکارڈ" : "Detected Spread Discrepancies & Gouging Episodes"}
             </h3>
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-[#55695C] font-semibold">
               Residual exceeds rolling P90 threshold
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
-              <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
+              <thead className="bg-[#FAF8F3] text-[#55695C] font-bold border-b border-[#EAE4D8]">
                 <tr>
-                  <th className="py-2.5 px-4">Date</th>
-                  <th className="py-2.5 px-4">Farmgate Paid</th>
-                  <th className="py-2.5 px-4">Wholesale Mandi</th>
-                  <th className="py-2.5 px-4">Retail City Price</th>
-                  <th className="py-2.5 px-4">Actual Spread</th>
-                  <th className="py-2.5 px-4">Normal Benchmark</th>
-                  <th className="py-2.5 px-4">Unexplained Gap</th>
-                  <th className="py-2.5 px-4">Inspect</th>
+                  <th className="py-3 px-4">Date</th>
+                  <th className="py-3 px-4">Farmgate Paid</th>
+                  <th className="py-3 px-4">Wholesale Mandi</th>
+                  <th className="py-3 px-4">Retail City Price</th>
+                  <th className="py-3 px-4">Actual Spread</th>
+                  <th className="py-3 px-4">Normal Benchmark</th>
+                  <th className="py-3 px-4">Unexplained Gap</th>
+                  <th className="py-3 px-4">Inspect</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#EAE4D8]">
                 {anomalyEpisodes.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-6 text-center text-slate-400">
+                    <td colSpan={8} className="py-8 text-center text-[#7A8C80] font-medium">
                       No cartel anomalies detected for this crop-mandi pair. Spreads are competitive.
                     </td>
                   </tr>
@@ -197,36 +200,36 @@ export default function WatchdogPage() {
                     return (
                       <tr
                         key={rec.date}
-                        className={`hover:bg-slate-50 cursor-pointer transition-colors ${
-                          isSelected ? "bg-rose-50/60 font-semibold" : ""
+                        className={`hover:bg-[#FAF8F3] cursor-pointer transition-colors ${
+                          isSelected ? "bg-[#FFF1F2] font-semibold" : ""
                         }`}
                         onClick={() => setSelectedRecord(rec)}
                       >
-                        <td className="py-2.5 px-4 font-mono font-medium text-slate-900">
+                        <td className="py-3 px-4 font-mono font-medium text-[#14231B]">
                           {rec.date}
                         </td>
-                        <td className="py-2.5 px-4 font-mono text-emerald-700">
+                        <td className="py-3 px-4 font-mono font-bold text-[#0F3E2E]">
                           ₨ {rec.farmgate_price}
                         </td>
-                        <td className="py-2.5 px-4 font-mono text-slate-700">
+                        <td className="py-3 px-4 font-mono text-[#2A3B30]">
                           ₨ {rec.wholesale_price}
                         </td>
-                        <td className="py-2.5 px-4 font-mono text-indigo-700">
+                        <td className="py-3 px-4 font-mono text-[#3730A3]">
                           ₨ {rec.retail_price}
                         </td>
-                        <td className="py-2.5 px-4 font-mono font-bold text-slate-900">
+                        <td className="py-3 px-4 font-mono font-bold text-[#14231B]">
                           ₨ {rec.spread_pkr}
                         </td>
-                        <td className="py-2.5 px-4 font-mono text-slate-500">
+                        <td className="py-3 px-4 font-mono text-[#55695C]">
                           ₨ {rec.normal_spread_pkr}
                         </td>
-                        <td className="py-2.5 px-4 font-mono font-bold text-rose-600">
+                        <td className="py-3 px-4 font-mono font-bold text-[#991B1B]">
                           +₨ {decomp.unexplainedSurplusPkr} ({decomp.unexplainedSurplusPct}%)
                         </td>
-                        <td className="py-2.5 px-4">
+                        <td className="py-3 px-4">
                           <button
                             onClick={() => setSelectedRecord(rec)}
-                            className="px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-[11px] font-semibold"
+                            className="px-3 py-1 bg-[#FEE2E2] hover:bg-[#FECACA] text-[#991B1B] rounded-lg text-xs font-bold border border-[#FECACA]"
                           >
                             Inspect
                           </button>

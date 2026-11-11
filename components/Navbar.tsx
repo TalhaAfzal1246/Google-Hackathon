@@ -3,8 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Language, DICTIONARY } from "@/lib/i18n";
-import { Sparkles, Sprout, Store, ShieldAlert, HelpCircle, Calendar } from "lucide-react";
+import {
+  Sprout,
+  Store,
+  ShieldAlert,
+  Calendar,
+  ShieldCheck,
+  TrendingUp,
+  Languages,
+} from "lucide-react";
 import MarketTicker from "@/components/MarketTicker";
+import BrandLogo from "@/components/BrandLogo";
 
 interface NavbarProps {
   lang: Language;
@@ -26,11 +35,11 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
   };
 
   const navLinks = [
-    { href: "/farmer", label: isUrdu ? "کسان پورٹل" : "Farmer Portal", icon: Sprout },
+    { href: "/farmer", label: isUrdu ? "کسان پورٹل" : "Farmer Advisory", icon: Sprout },
     { href: "/planner", label: isUrdu ? "اگلی فصل پلانر" : "Crop Planner", icon: Calendar },
-    { href: "/market", label: isUrdu ? "منصفانہ منڈی" : "Live Exchange", icon: Store },
+    { href: "/market", label: isUrdu ? "منصفانہ منڈی" : "Wholesale Exchange", icon: Store },
     { href: "/watchdog", label: isUrdu ? "آڑھتی واچ ڈاگ" : "Spread Watchdog", icon: ShieldAlert },
-    { href: "/copilot", label: isUrdu ? "رسد و طلب AI" : "Supply & Demand AI", icon: HelpCircle },
+    { href: "/copilot", label: isUrdu ? "مارکیٹ ڈیسک" : "Market Intelligence", icon: TrendingUp },
   ];
 
   return (
@@ -38,30 +47,15 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
       {/* Live Official Mandi Price Ticker (AMIS Punjab & PBS) */}
       <MarketTicker lang={lang} />
 
-      <header className="sticky top-0 z-50 bg-[#fbfbfa]/95 backdrop-blur-md border-b border-emerald-950/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Brand */}
+      <header className="sticky top-0 z-50 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE4D8] shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+          {/* Brand Logo & Authority Seal */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-600 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-all">
-              <Sprout className="w-5 h-5 text-amber-300" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-lg text-slate-900 tracking-tight">
-                  {t.appTitle}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300/60 hidden sm:inline-block">
-                  AgriTech AI
-                </span>
-              </div>
-              <p className="text-[11px] text-emerald-800/80 font-medium hidden sm:block">
-                {isUrdu ? "پاکستان کی زرعی منڈی کا سمارٹ نظام" : "Pakistan Mandi Price Intelligence"}
-              </p>
-            </div>
+            <BrandLogo lang={lang} size="md" />
           </Link>
 
-          {/* Navigation items */}
-          <nav className="hidden md:flex items-center gap-1 bg-white/70 p-1 rounded-xl border border-emerald-900/10 shadow-xs">
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1 bg-[#F5EFEB] p-1.5 rounded-2xl border border-[#E2D8C7] shadow-inner">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -69,31 +63,35 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all ${
                     isActive
-                      ? "bg-emerald-800 text-white shadow-xs"
-                      : "text-slate-700 hover:text-emerald-900 hover:bg-emerald-50/80"
+                      ? "bg-[#0F3E2E] text-white shadow-xs"
+                      : "text-[#2A3B30] hover:text-[#0F3E2E] hover:bg-[#EBE2D3]"
                   } ${isUrdu ? "font-urdu text-sm" : ""}`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-amber-300" : "text-emerald-700"}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#FBBF24]" : "text-[#134E35]"}`} />
                   <span>{link.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* Actions */}
+          {/* Status & Language Toggle */}
           <div className="flex items-center gap-2.5">
-            <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-semibold text-emerald-900 bg-emerald-50/90 px-3 py-1 rounded-full border border-emerald-200">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Google Gemini</span>
+            {/* Established Institutional Verification Badge */}
+            <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-bold text-[#0F3E2E] bg-[#E8F3EC] px-3 py-1.5 rounded-full border border-[#BDE0CB]">
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>{isUrdu ? "حکومتی منڈی ڈیٹا منسلک" : "AMIS Punjab Verified Feeds"}</span>
             </div>
 
+            {/* Language Switcher */}
             <button
               onClick={handleToggle}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
-              title="Toggle Language"
+              className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95 border border-[#0A2D21]"
+              title="Toggle Language / زبان تبدیل کریں"
             >
+              <Languages className="w-3.5 h-3.5 text-[#FBBF24]" />
               <span>{lang === "en" ? "اردو (Urdu)" : "English"}</span>
             </button>
           </div>

@@ -25,7 +25,7 @@ export default function DecompositionBar({
   const pct = (val: number) => (total > 0 ? (val / total) * 100 : 0);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+    <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">

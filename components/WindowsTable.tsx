@@ -16,19 +16,19 @@ export default function WindowsTable({
   bestStep,
 }: WindowsTableProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-      <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <h3 className="font-bold text-slate-900 text-sm">
+    <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] overflow-hidden shadow-xs">
+      <div className="px-5 py-3.5 bg-[#FAF8F3] border-b border-[#EAE4D8] flex items-center justify-between">
+        <h3 className="font-black text-[#14231B] text-sm">
           Harvest Horizon Evaluation Window ($t+3$ to $t+30$ Days)
         </h3>
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-[#55695C] font-semibold">
           Evaluated against Risk-Adjusted Net Return
         </span>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-xs text-left">
-          <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
+          <thead className="bg-[#FAF8F3] text-[#55695C] font-bold border-b border-[#EAE4D8]">
             <tr>
               <th className="py-2.5 px-4">Horizon</th>
               <th className="py-2.5 px-4">Target Date</th>

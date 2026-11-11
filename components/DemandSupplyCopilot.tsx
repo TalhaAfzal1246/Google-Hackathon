@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sparkles, Send, HelpCircle, AlertTriangle, Compass, Volume2, VolumeX } from "lucide-react";
+import { Send, HelpCircle, AlertTriangle, Compass, Volume2, VolumeX, TrendingUp, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Language, DICTIONARY } from "@/lib/i18n";
 
 interface CopilotProps {
@@ -91,30 +91,29 @@ export default function DemandSupplyCopilot({
       });
 
       if (res.ok) {
-        const data = await res.json();
-        setResponse(data);
+        const j = await res.json();
+        setResponse(j);
+        setQuestion("");
       }
     } catch (err) {
-      console.error("Copilot error:", err);
+      console.error("Mandi Copilot Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fallbackSpeechSynthesis = (text: string, targetLang: "ur" | "en") => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      setActiveVoiceLang(null);
-      return;
-    }
+  const fallbackSpeechSynthesis = (textToSpeak: string, targetLang: "ur" | "en") => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = targetLang === "ur" ? "ur-PK" : "en-US";
-    utterance.rate = 0.92;
+    utterance.rate = 0.95;
 
     const voices = window.speechSynthesis.getVoices();
     const match = voices.find((v) =>
       targetLang === "ur"
-        ? v.lang.startsWith("ur") || v.name.toLowerCase().includes("urdu") || v.lang.startsWith("hi")
+        ? v.lang.startsWith("ur") || v.name.includes("Urdu")
         : v.lang.startsWith("en")
     );
     if (match) utterance.voice = match;
@@ -166,175 +165,162 @@ export default function DemandSupplyCopilot({
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+    <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-6 shadow-xs">
       <div className="flex items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-200">
-            <HelpCircle className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-2xl bg-[#E8F3EC] text-[#0F3E2E] flex items-center justify-center shrink-0 border border-[#BDE0CB]">
+            <TrendingUp className="w-5 h-5 text-emerald-800" />
           </div>
           <div>
-            <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+            <h3 className="font-extrabold text-[#14231B] text-sm sm:text-base">
               {t.demandSupplyCopilot}
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#55695C] font-medium">
               {isUrdu
-                ? "رسد، کھپت، موسمی اثرات یا منڈی ریٹس سے متعلق کوئی بھی سوال پوچھیں"
+                ? "رسد، کھپت، موسمی اثرات یا منڈی ریٹس سے متعلق کوئی بھی تجارتی سوال پوچھیں"
                 : "Ask any question about harvest supply, urban demand, inflation, or seasonal mandi shocks"}
             </p>
           </div>
         </div>
 
-        <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-200 font-semibold">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>Google Gemini</span>
+        <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#0F3E2E] bg-[#E8F3EC] px-3.5 py-1.5 rounded-full border border-[#BDE0CB] font-bold">
+          <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+          <span>{isUrdu ? "منڈی ریسرچ ڈیسک منسلک" : "Live Market Desk"}</span>
         </div>
       </div>
 
-      {/* Suggested quick pills */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {suggestedQuestions.map((q, idx) => (
-          <button
-            key={idx}
-            onClick={() => {
-              setQuestion(q);
-              handleAsk(q);
-            }}
-            disabled={loading}
-            className="text-xs bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-300 text-slate-700 font-medium px-3 py-1.5 rounded-full border border-slate-200 transition-all text-left"
-          >
-            💬 {q}
-          </button>
-        ))}
+      {/* Suggested Questions Grid */}
+      <div className="mb-4">
+        <div className="text-[11px] font-black uppercase tracking-wider text-[#66786D] mb-2 flex items-center gap-1.5">
+          <Compass className="w-3.5 h-3.5 text-emerald-700" />
+          <span>{isUrdu ? "اہم تجارتی سوالات (کلک کر کے پوچھیں):" : "Suggested Market Inquiries (Click to ask):"}</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {suggestedQuestions.map((q, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleAsk(q)}
+              disabled={loading}
+              className="text-left p-2.5 rounded-xl border border-[#EAE4D8] bg-[#FAF8F3] hover:bg-[#F2ECE1] hover:border-[#0F3E2E] text-xs font-semibold text-[#14231B] transition-all flex items-center justify-between group disabled:opacity-50"
+            >
+              <span className={`line-clamp-1 ${isUrdu ? "font-urdu text-xs" : ""}`}>{q}</span>
+              <Send className="w-3 h-3 text-[#7B8C80] group-hover:text-[#0F3E2E] shrink-0 ml-1.5 transition-colors" />
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Input row */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleAsk(question);
-        }}
-        className="flex gap-2"
-      >
+      {/* Input Box */}
+      <div className="flex gap-2">
         <input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder={isUrdu ? "اپنا سوال یہاں لکھیں... (مثلاً: ٹماٹر کا ریٹ کل کیا ہوگا؟)" : t.copilotPlaceholder}
-          className="flex-1 bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all font-medium"
+          onKeyDown={(e) => e.key === "Enter" && handleAsk(question)}
+          placeholder={t.copilotPlaceholder}
+          disabled={loading}
+          className={`flex-1 px-4 py-2.5 rounded-2xl border border-[#DCD3C3] bg-[#FEFDFB] text-xs sm:text-sm text-[#14231B] placeholder-[#8A9B8F] focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent ${
+            isUrdu ? "font-urdu text-sm" : ""
+          }`}
         />
         <button
-          type="submit"
+          onClick={() => handleAsk(question)}
           disabled={loading || !question.trim()}
-          className="flex items-center gap-2 px-5 py-3 bg-emerald-800 hover:bg-emerald-900 disabled:opacity-50 text-white rounded-2xl text-xs sm:text-sm font-extrabold shadow-sm transition-all active:scale-95 shrink-0"
+          className="px-5 py-2.5 bg-[#0F3E2E] hover:bg-[#144E3A] disabled:bg-[#BAC6BF] text-white rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all shadow-xs shrink-0"
         >
           {loading ? (
-            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
-            <>
-              <Send className="w-4 h-4" />
-              <span>{isUrdu ? "پوچھیں" : t.sendQuestion}</span>
-            </>
+            <Send className="w-4 h-4 text-[#FBBF24]" />
           )}
+          <span>{t.sendQuestion}</span>
         </button>
-      </form>
+      </div>
 
-      {/* Response Display */}
+      {/* Response Panel */}
       {response && (
-        <div className="mt-5 pt-5 border-t border-slate-200">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div className="mt-5 pt-5 border-t border-[#EAE4D8] space-y-4 animate-in fade-in duration-300">
+          <div className="flex items-center justify-between gap-3 bg-[#FAF8F3] p-3 rounded-2xl border border-[#EBE4D6]">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                {isUrdu ? "منڈی آؤٹ لک:" : "Mandi Outlook:"}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                <Compass className="w-3.5 h-3.5" />
-                {response.marketOutlook}
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+              <span className="text-xs font-bold text-[#14231B]">
+                {isUrdu ? "منڈی ڈیسک تجزیہ و جواب" : "Mandi Desk Intelligence Report"}
               </span>
             </div>
 
-            {/* Audio Readout Buttons for Copilot (Urdu & English) */}
-            <div className="flex items-center gap-2">
+            {/* Audio Listen Buttons */}
+            <div className="flex items-center gap-1.5">
               <button
+                type="button"
                 onClick={() => playVoice("ur")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   activeVoiceLang === "ur"
-                    ? "bg-emerald-700 text-white ring-2 ring-emerald-400 animate-pulse"
-                    : "bg-emerald-900 hover:bg-emerald-800 text-white"
+                    ? "bg-[#D97706] text-white shadow-xs animate-pulse"
+                    : "bg-[#FEFDFB] text-[#0F3E2E] hover:bg-[#E8F3EC] border border-[#BDE0CB]"
                 }`}
+                title="Listen in Urdu"
               >
-                {activeVoiceLang === "ur" ? (
-                  <>
-                    <VolumeX className="w-3.5 h-3.5 text-amber-300" />
-                    <span>⏹ آواز بند کریں</span>
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-3.5 h-3.5 text-amber-300" />
-                    <span>🔊 اردو میں سنیں</span>
-                  </>
-                )}
+                {activeVoiceLang === "ur" ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                <span className="font-urdu text-[11px]">{activeVoiceLang === "ur" ? "روکیں" : "سنیں (اردو)"}</span>
               </button>
 
               <button
+                type="button"
                 onClick={() => playVoice("en")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   activeVoiceLang === "en"
-                    ? "bg-indigo-700 text-white ring-2 ring-indigo-400 animate-pulse"
-                    : "bg-slate-900 hover:bg-slate-800 text-white"
+                    ? "bg-[#0F3E2E] text-white shadow-xs animate-pulse"
+                    : "bg-[#FEFDFB] text-[#55695C] hover:bg-[#F5EFEB] border border-[#EAE4D8]"
                 }`}
+                title="Listen in English"
               >
-                {activeVoiceLang === "en" ? (
-                  <>
-                    <VolumeX className="w-3.5 h-3.5 text-indigo-300" />
-                    <span>⏹ Stop</span>
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-3.5 h-3.5 text-slate-300" />
-                    <span>🔊 English</span>
-                  </>
-                )}
+                {activeVoiceLang === "en" ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                <span>{activeVoiceLang === "en" ? "Stop" : "English"}</span>
               </button>
             </div>
           </div>
 
-          {/* Key Drivers */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
-            {response.keyDrivers.map((driver, i) => (
-              <div
-                key={i}
-                className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs font-bold text-slate-800 flex items-center gap-2"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-600 flex-shrink-0" />
-                <span>{driver}</span>
-              </div>
-            ))}
+          {/* Primary Answer Paragraph */}
+          <div className="p-4 rounded-2xl bg-[#FEFDFB] border border-[#EAE4D8] text-xs sm:text-sm text-[#2A3B30] leading-relaxed shadow-2xs">
+            <p className={isUrdu ? "font-urdu text-sm" : ""}>
+              {isUrdu ? response.answer_ur || response.answer : response.answer}
+            </p>
           </div>
 
-          {/* Urdu summary */}
-          {response.answer_ur && (
-            <div className="mb-3 p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs sm:text-sm text-emerald-950 font-urdu leading-relaxed">
-              <div className="font-bold mb-1 text-emerald-900 flex items-center gap-1">
-                <span>🌾 اردو خلاصہ:</span>
+          {/* Key Drivers & Outlook Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Outlook */}
+            <div className="p-3 rounded-2xl bg-[#FAF8F3] border border-[#EBE4D6]">
+              <div className="text-[10px] font-black uppercase tracking-wider text-[#55695C] mb-1">
+                {isUrdu ? "منڈی آؤٹ لک" : "Market Outlook"}
               </div>
-              {response.answer_ur}
+              <div className="text-xs font-black text-[#0F3E2E]">
+                {response.marketOutlook}
+              </div>
             </div>
-          )}
 
-          {/* Answer Text */}
-          <div className="bg-slate-50 p-4 rounded-2xl text-xs sm:text-sm text-slate-800 leading-relaxed border border-slate-200 whitespace-pre-line font-medium">
-            {response.answer}
+            {/* Risk */}
+            <div className="p-3 rounded-2xl bg-[#FFFDF5] border border-[#FCD34D]">
+              <div className="text-[10px] font-black uppercase tracking-wider text-[#92400E] mb-1 flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3 text-amber-600" />
+                <span>{isUrdu ? "اہم تجارتی خطرہ" : "Risk Factor"}</span>
+              </div>
+              <div className="text-xs font-bold text-[#853E06]">
+                {response.riskFactor}
+              </div>
+            </div>
+
+            {/* Top Drivers */}
+            <div className="p-3 rounded-2xl bg-[#FAF8F3] border border-[#EBE4D6]">
+              <div className="text-[10px] font-black uppercase tracking-wider text-[#55695C] mb-1">
+                {isUrdu ? "قیمت کے محرکات" : "Key Price Drivers"}
+              </div>
+              <div className="text-xs text-[#2A3B30] font-semibold line-clamp-2">
+                {response.keyDrivers?.join(" • ") || "Arrival supply & transport"}
+              </div>
+            </div>
           </div>
-
-          {/* Risk factor */}
-          {response.riskFactor && (
-            <div className="mt-3 flex items-start gap-2.5 text-xs text-amber-900 bg-amber-50/80 p-3 rounded-2xl border border-amber-200">
-              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-              <span>
-                <strong>{isUrdu ? "اہم خطرہ:" : "Primary Risk Factor:"}</strong> {response.riskFactor}
-              </span>
-            </div>
-          )}
         </div>
       )}
     </div>
