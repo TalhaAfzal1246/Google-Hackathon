@@ -14,22 +14,18 @@ import {
   Scale,
   ShieldCheck,
   Calendar,
-  Compass,
-  CheckCircle2,
   Building2,
-  Coins,
-  MapPin,
-  ExternalLink,
   Award,
   Layers,
+  MapPin,
 } from "lucide-react";
 
 const MANDI_PREVIEWS = [
-  { key: "tomato", name_en: "Tomato", name_ur: "ٹماٹر", emoji: "🍅", rate: "₨ 175/kg", maund: "₨ 7,000/من", mandi: "Lahore", change: "+4.2%" },
-  { key: "onion", name_en: "Onion", name_ur: "پیاز", emoji: "🧅", rate: "₨ 165/kg", maund: "₨ 6,600/من", mandi: "Faisalabad", change: "+2.8%" },
-  { key: "potato", name_en: "Potato", name_ur: "آلو", emoji: "🥔", rate: "₨ 48/kg", maund: "₨ 1,920/من", mandi: "Okara", change: "-1.1%" },
-  { key: "wheat", name_en: "Wheat", name_ur: "گندم", emoji: "🌾", rate: "₨ 98/kg", maund: "₨ 3,920/من", mandi: "Multan", change: "+0.5%" },
-  { key: "rice_basmati", name_en: "Basmati Rice", name_ur: "باسمتی چاول", emoji: "🍚", rate: "₨ 220/kg", maund: "₨ 8,800/من", mandi: "Gujranwala", change: "+1.9%" },
+  { key: "tomato", name_en: "Tomato", name_ur: "ٹماٹر", emoji: "🍅", rate_en: "₨ 175/kg", rate_ur: "175 روپے / کلو", maund_en: "₨ 7,000/maund", maund_ur: "7,000 روپے / من", mandi: "Lahore" },
+  { key: "onion", name_en: "Onion", name_ur: "پیاز", emoji: "🧅", rate_en: "₨ 165/kg", rate_ur: "165 روپے / کلو", maund_en: "₨ 6,600/maund", maund_ur: "6,600 روپے / من", mandi: "Faisalabad" },
+  { key: "potato", name_en: "Potato", name_ur: "آلو", emoji: "🥔", rate_en: "₨ 48/kg", rate_ur: "48 روپے / کلو", maund_en: "₨ 1,920/maund", maund_ur: "1,920 روپے / من", mandi: "Okara" },
+  { key: "wheat", name_en: "Wheat", name_ur: "گندم", emoji: "🌾", rate_en: "₨ 98/kg", rate_ur: "98 روپے / کلو", maund_en: "₨ 3,920/maund", maund_ur: "3,920 روپے / من", mandi: "Multan" },
+  { key: "rice_basmati", name_en: "Basmati Rice", name_ur: "باسمتی چاول", emoji: "🍚", rate_en: "₨ 220/kg", rate_ur: "220 روپے / کلو", maund_en: "₨ 8,800/maund", maund_ur: "8,800 روپے / من", mandi: "Gujranwala" },
 ];
 
 export default function HomePage() {
@@ -72,7 +68,7 @@ export default function HomePage() {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#14231B] tracking-tight max-w-4xl mx-auto leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#14231B] tracking-tight max-w-4xl mx-auto leading-tight text-balance">
             {isUrdu ? (
               <span>
                 پاکستانی کسانوں کے لیے <span className="text-[#0F3E2E]">سرکاری منڈی پیشگوئی</span> اور منصفانہ اجناس تجارت
@@ -84,7 +80,7 @@ export default function HomePage() {
             )}
           </h1>
 
-          <p className="mt-4 text-sm sm:text-lg text-[#3B4D41] max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="mt-4 text-sm sm:text-lg text-[#3B4D41] max-w-2xl mx-auto leading-relaxed font-medium text-balance">
             {isUrdu
               ? "غیر منصفانہ کٹوتیوں اور آڑھتی اجارہ داری سے نجات۔ سرکاری منڈی ریٹس کی بنیاد پر جانیے کہ اپنی فصل کب بیچنی ہے اور اگلی سہ ماہی کے لیے کون سی فصل سب سے زیادہ منافع بخش ہوگی۔"
               : "Eliminate middleman exploitation and post-harvest distress sales. Econometric price quantile forecasting, next-quarter crop planning, and transparent bilateral buyer settlement."}
@@ -121,10 +117,10 @@ export default function HomePage() {
                       {isUrdu ? c.name_ur : c.name_en}
                     </div>
                     <div className="text-xs font-black text-[#0F3E2E] mt-0.5">
-                      {c.rate}
+                      {isUrdu ? c.rate_ur : c.rate_en}
                     </div>
                     <div className="text-[10px] font-bold text-[#6B7C70]">
-                      {c.maund}
+                      {isUrdu ? c.maund_ur : c.maund_en}
                     </div>
                   </div>
                 </Link>
@@ -132,40 +128,42 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Primary Action Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          {/* Perfectly Balanced 4 Action Buttons Grid */}
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-4xl mx-auto w-full">
             <Link
               href="/farmer"
-              className="flex items-center gap-2 px-6 py-3.5 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-2xl font-black shadow-md shadow-emerald-950/20 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base border border-[#0A2D21]"
+              className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-2xl font-black shadow-md shadow-emerald-950/20 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm border border-[#0A2D21]"
             >
-              <Sprout className="w-5 h-5 text-[#FBBF24]" />
-              <span>{isUrdu ? "🌾 کسان پورٹل (آج کا مشورہ)" : "🌾 Farmer Advisory Portal"}</span>
-              <ArrowIcon className="w-4 h-4 ml-1" />
+              <Sprout className="w-4 h-4 text-[#FBBF24] shrink-0" />
+              <span>{isUrdu ? "کسان پورٹل (آج کا مشورہ)" : "Farmer Advisory Portal"}</span>
+              <ArrowIcon className="w-3.5 h-3.5 ml-1 shrink-0" />
             </Link>
 
             <Link
               href="/planner"
-              className="flex items-center gap-2 px-6 py-3.5 bg-[#D97706] hover:bg-[#B45309] text-white rounded-2xl font-black shadow-md shadow-amber-900/20 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base border border-[#B45309]"
+              className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#D97706] hover:bg-[#B45309] text-white rounded-2xl font-black shadow-md shadow-amber-900/20 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm border border-[#B45309]"
             >
-              <Calendar className="w-5 h-5 text-[#FEF3C7]" />
-              <span>{isUrdu ? "📅 اگلی فصل کا پلانر (بہترین منافع)" : "📅 Next-Quarter Crop Planner"}</span>
-              <ArrowIcon className="w-4 h-4 ml-1" />
+              <Calendar className="w-4 h-4 text-[#FEF3C7] shrink-0" />
+              <span>{isUrdu ? "اگلی فصل پلانر" : "Next-Quarter Planner"}</span>
+              <ArrowIcon className="w-3.5 h-3.5 ml-1 shrink-0" />
             </Link>
 
             <Link
               href="/market"
-              className="flex items-center gap-2 px-6 py-3.5 bg-[#1F2E25] hover:bg-[#283C30] text-white rounded-2xl font-extrabold shadow-md transition-all hover:scale-105 active:scale-95 text-sm sm:text-base border border-[#14231B]"
+              className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#1F2E25] hover:bg-[#283C30] text-white rounded-2xl font-black shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm border border-[#14231B]"
             >
-              <Store className="w-5 h-5 text-emerald-300" />
-              <span>{isUrdu ? "🛒 منصفانہ ہول سیل منڈی" : "🛒 Wholesale Mandi Exchange"}</span>
+              <Store className="w-4 h-4 text-emerald-300 shrink-0" />
+              <span>{isUrdu ? "منصفانہ ہول سیل منڈی" : "Wholesale Exchange"}</span>
+              <ArrowIcon className="w-3.5 h-3.5 ml-1 shrink-0" />
             </Link>
 
             <Link
               href="/copilot"
-              className="flex items-center gap-2 px-6 py-3.5 bg-[#FEFDFB] hover:bg-[#F5EFEB] text-[#1E2621] border-2 border-[#DCD3C3] rounded-2xl font-extrabold shadow-xs transition-all hover:scale-105 active:scale-95 text-sm sm:text-base"
+              className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#FEFDFB] hover:bg-[#F5EFEB] text-[#1E2621] border-2 border-[#DCD3C3] rounded-2xl font-black shadow-xs transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm"
             >
-              <TrendingUp className="w-5 h-5 text-emerald-800" />
-              <span>{isUrdu ? "📈 منڈی انٹیلی جنس ڈیسک" : "📈 Mandi Intelligence Desk"}</span>
+              <TrendingUp className="w-4 h-4 text-emerald-800 shrink-0" />
+              <span>{isUrdu ? "منڈی انٹیلی جنس ڈیسک" : "Mandi Intelligence Desk"}</span>
+              <ArrowIcon className="w-3.5 h-3.5 ml-1 shrink-0" />
             </Link>
           </div>
 
@@ -176,7 +174,7 @@ export default function HomePage() {
                 <Award className="w-3.5 h-3.5 text-amber-600" />
                 <span>{isUrdu ? "پیشگوئی کی درستی" : "Backtest Accuracy"}</span>
               </div>
-              <div className="text-2xl font-black text-[#14231B] mt-0.5">92.3%</div>
+              <div dir="ltr" className="text-2xl font-black text-[#14231B] mt-0.5">92.3%</div>
               <div className="text-[11px] text-[#0F3E2E] font-bold">{isUrdu ? "7.7% اوسط خطا (MAPE)" : "7.7% Empirical MAPE"}</div>
             </div>
 
@@ -185,7 +183,7 @@ export default function HomePage() {
                 <Scale className="w-3.5 h-3.5 text-emerald-700" />
                 <span>{isUrdu ? "شماریاتی اعتماد کا دائرہ" : "Empirical Coverage"}</span>
               </div>
-              <div className="text-2xl font-black text-[#14231B] mt-0.5">81.4%</div>
+              <div dir="ltr" className="text-2xl font-black text-[#14231B] mt-0.5">81.4%</div>
               <div className="text-[11px] text-[#4F6155] font-bold">{isUrdu ? "P10 تا P90 حدود" : "P10-P90 Risk Envelope"}</div>
             </div>
 

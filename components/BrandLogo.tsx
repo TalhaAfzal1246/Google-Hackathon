@@ -15,17 +15,17 @@ export default function BrandLogo({
 
   const sizeMap = {
     sm: { icon: "w-8 h-8", title: "text-base", sub: "text-[10px]" },
-    md: { icon: "w-10 h-10", title: "text-lg", sub: "text-[11px]" },
-    lg: { icon: "w-12 h-12", title: "text-xl", sub: "text-xs" },
+    md: { icon: "w-9 h-9 sm:w-10 sm:h-10", title: "text-base sm:text-lg", sub: "text-[10px] sm:text-[11px]" },
+    lg: { icon: "w-11 h-11 sm:w-12 sm:h-12", title: "text-lg sm:text-xl", sub: "text-xs" },
   };
 
   const currentSize = sizeMap[size];
 
   return (
-    <div className="flex items-center gap-3 select-none">
+    <div className="flex items-center gap-2.5 sm:gap-3 select-none">
       {/* Official Agro-Exchange Emblem SVG */}
       <div
-        className={`${currentSize.icon} rounded-xl bg-gradient-to-br from-[#0E3E28] via-[#134E35] to-[#1E6B47] flex items-center justify-center p-1.5 shadow-sm shadow-emerald-950/20 border border-emerald-600/30 group-hover:scale-105 transition-transform`}
+        className={`${currentSize.icon} rounded-xl bg-gradient-to-br from-[#0E3E28] via-[#134E35] to-[#1E6B47] flex items-center justify-center p-1.5 shadow-sm shadow-emerald-950/20 border border-emerald-600/30 group-hover:scale-105 transition-transform shrink-0`}
       >
         <svg
           viewBox="0 0 36 36"
@@ -90,23 +90,23 @@ export default function BrandLogo({
       </div>
 
       {/* Brand Typographic Identity */}
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col text-left">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <span
-            className={`font-black tracking-tight text-[#14231B] leading-tight ${currentSize.title} ${
-              isUrdu ? "font-urdu text-base" : ""
+            className={`font-black tracking-tight text-[#14231B] leading-none whitespace-nowrap ${currentSize.title} ${
+              isUrdu ? "font-urdu text-base sm:text-lg" : ""
             }`}
           >
             {isUrdu ? "فارم ٹو فیوچر" : "Farm-to-Future"}
           </span>
-          <span className="text-[9px] uppercase tracking-wider font-extrabold bg-[#F5EFEB] text-[#853E06] px-2 py-0.5 rounded-md border border-[#E2D8C7] hidden sm:inline-block">
-            {isUrdu ? "قومی منڈی نیٹ ورک" : "National Exchange"}
+          <span className="text-[9px] uppercase tracking-wider font-extrabold bg-[#F5EFEB] text-[#853E06] px-1.5 sm:px-2 py-0.5 rounded-md border border-[#E2D8C7] hidden md:inline-block whitespace-nowrap">
+            {isUrdu ? "قومی منڈی" : "National Exchange"}
           </span>
         </div>
 
         {showSubtitle && (
           <p
-            className={`text-[#2F5233] font-semibold leading-tight mt-0.5 hidden sm:block ${currentSize.sub} ${
+            className={`text-[#2F5233] font-semibold leading-tight mt-0.5 hidden sm:block whitespace-nowrap ${currentSize.sub} ${
               isUrdu ? "font-urdu text-[11px]" : ""
             }`}
           >

@@ -200,7 +200,9 @@ function NegotiationContent({ id }: { id: string }) {
                 <span className="text-xs font-bold uppercase tracking-wider bg-[#E8F3EC] text-[#0F3E2E] px-2.5 py-0.5 rounded-full border border-[#BDE0CB]">
                   {isUrdu ? "براہ راست تجارتی کمرہ" : "Direct Fair-Trade Room"}
                 </span>
-                <span className="text-xs text-[#55695C] font-semibold">Lot: {qtyKg.toLocaleString()} kg {cropName}</span>
+                <span className="text-xs text-[#55695C] font-semibold">
+                  {isUrdu ? `لاٹ: ${qtyKg.toLocaleString()} کلوگرام ${cropName === "Tomato" ? "ٹماٹر" : cropName}` : `Lot: ${qtyKg.toLocaleString()} kg ${cropName}`}
+                </span>
               </div>
               <h1 className="text-2xl font-black text-[#14231B] mt-1 tracking-tight">
                 {isUrdu ? `${buyerName} کے ساتھ براہ راست سودا` : `Bilateral Negotiation with ${buyerName}`}
@@ -226,7 +228,7 @@ function NegotiationContent({ id }: { id: string }) {
                 disabled={isAutoRunning || dealSettled || loadingStep || currentRound > 5}
                 className="flex items-center gap-1.5 px-3 py-2 bg-[#FEFDFB] border border-[#EAE4D8] text-[#2A3B30] hover:bg-[#FAF8F3] rounded-xl text-xs font-bold shadow-2xs transition-all"
               >
-                <span>Round {currentRound}</span>
+                <span>{isUrdu ? `راؤنڈ ${currentRound}` : `Round ${currentRound}`}</span>
               </button>
             </div>
           </div>
@@ -234,18 +236,20 @@ function NegotiationContent({ id }: { id: string }) {
 
         {/* Statistical Fair Band Bar Component */}
         <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-2 text-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 text-xs gap-1">
             <span className="font-extrabold text-[#14231B] flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-700" />
               <span>{isUrdu ? "شماریاتی منصفانہ حد [P25 - P75]" : "Statistical Fair Band Anchor [P25 - P75]"}</span>
             </span>
             <span className="text-[#55695C] font-semibold">
-              Floor: ₨ {farmerFloor} &bull; Median P50: ₨ {fairBandP50} &bull; Ceiling: ₨ {buyerCeiling}
+              {isUrdu
+                ? `کم سے کم: ${farmerFloor} روپے • میڈین: ${fairBandP50} روپے • خریدار حد: ${buyerCeiling} روپے`
+                : `Floor: ₨ ${farmerFloor} • Median P50: ₨ ${fairBandP50} • Ceiling: ₨ ${buyerCeiling}`}
             </span>
           </div>
 
           {/* Visual Band Gauge */}
-          <div className="relative h-4 bg-[#FAF8F3] rounded-full overflow-hidden border border-[#EAE4D8] my-3">
+          <div className="relative h-4 bg-[#FAF8F3] rounded-full overflow-hidden border border-[#EAE4D8] my-3" dir="ltr">
             {/* Fair Band Range Highlight */}
             <div
               style={{
@@ -279,12 +283,12 @@ function NegotiationContent({ id }: { id: string }) {
             )}
           </div>
 
-          <div className="flex justify-between text-[11px] text-[#55695C] font-mono font-bold">
-            <span>₨ {farmerFloor} (Floor)</span>
-            <span className="text-[#0F3E2E]">₨ {fairBandP25} (P25)</span>
-            <span className="text-[#0F3E2E] font-black">₨ {fairBandP50} (P50)</span>
-            <span className="text-[#0F3E2E]">₨ {fairBandP75} (P75)</span>
-            <span>₨ {buyerCeiling} (Ceiling)</span>
+          <div className="flex justify-between text-[11px] text-[#55695C] font-semibold" dir="ltr">
+            <span>{isUrdu ? `${farmerFloor} روپے (کم از کم)` : `₨ ${farmerFloor} (Floor)`}</span>
+            <span className="text-[#0F3E2E]">{isUrdu ? `${fairBandP25} روپے (P25)` : `₨ ${fairBandP25} (P25)`}</span>
+            <span className="text-[#0F3E2E] font-black">{isUrdu ? `${fairBandP50} روپے (P50)` : `₨ ${fairBandP50} (P50)`}</span>
+            <span className="text-[#0F3E2E]">{isUrdu ? `${fairBandP75} روپے (P75)` : `₨ ${fairBandP75} (P75)`}</span>
+            <span>{isUrdu ? `${buyerCeiling} روپے (خریدار حد)` : `₨ ${buyerCeiling} (Ceiling)`}</span>
           </div>
         </div>
 
@@ -296,18 +300,18 @@ function NegotiationContent({ id }: { id: string }) {
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle2 className="w-5 h-5 text-[#FDE68A]" />
                   <span className="font-black text-lg">
-                    {isUrdu ? `منصفانہ سودا طے پا گیا: ₨ ${finalDeal.pricePerKg}/kg!` : `Fair-Trade Deal Agreed at ₨ ${finalDeal.pricePerKg}/kg!`}
+                    {isUrdu ? `منصفانہ سودا طے پا گیا: ₨ ${finalDeal.pricePerKg} فی کلو!` : `Fair-Trade Deal Agreed at ₨ ${finalDeal.pricePerKg}/kg!`}
                   </span>
                 </div>
                 <p className="text-xs text-[#A7D9C0] max-w-xl font-medium">
-                  Settled at equilibrium inside the statistical fair band. Total contract value:{" "}
-                  <strong>₨ {finalDeal.totalAmountPkr.toLocaleString()} PKR</strong>.
+                  {isUrdu ? "شماریاتی منصفانہ حد کے اندر تصفیہ مکمل ہوا۔ کل مالیت: " : "Settled at equilibrium inside the statistical fair band. Total contract value: "}
+                  <strong dir="ltr">₨ {finalDeal.totalAmountPkr.toLocaleString()} PKR</strong>
                 </p>
               </div>
 
               <div className="bg-white/10 backdrop-blur px-4 py-2.5 rounded-2xl border border-white/20 text-right">
-                <div className="text-[10px] text-[#FDE68A] uppercase font-bold">Contract Total</div>
-                <div className="text-xl font-black">₨ {finalDeal.totalAmountPkr.toLocaleString()}</div>
+                <div className="text-[10px] text-[#FDE68A] uppercase font-bold">{isUrdu ? "معاہدے کی کل رقم" : "Contract Total"}</div>
+                <div className="text-xl font-black" dir="ltr">₨ {finalDeal.totalAmountPkr.toLocaleString()}</div>
               </div>
             </div>
           </div>
@@ -320,21 +324,23 @@ function NegotiationContent({ id }: { id: string }) {
               {isUrdu ? "براہ راست بولی و جوابی پیشکش کا تبادلہ" : "Live Concession Exchange & Direct Mandi Dialogue"}
             </h3>
             <span className="text-xs text-[#55695C] font-semibold">
-              Round {Math.min(currentRound - 1, 5)} of 5
+              {isUrdu ? `راؤنڈ ${Math.min(currentRound - 1, 5)} از 5` : `Round ${Math.min(currentRound - 1, 5)} of 5`}
             </span>
           </div>
 
           {history.length === 0 ? (
             <div className="py-12 text-center text-xs text-[#7A8C80]">
-              Click &quot;Auto-Negotiate&quot; or &quot;Manual Round&quot; to begin the automated bargaining session.
+              {isUrdu
+                ? 'خودکار یا دستی مذاکرات شروع کرنے کے لیے اوپر دیے گئے بٹن پر کلک کریں۔'
+                : 'Click "Auto-Negotiate" or "Manual Round" to begin the automated bargaining session.'}
             </div>
           ) : (
             <div className="space-y-4">
               {history.map((turn, i) => (
                 <div key={i} className="space-y-2.5">
                   <div className="flex items-center justify-between text-xs font-bold text-[#55695C]">
-                    <span>Round {turn.round}</span>
-                    <span className="font-mono text-[#14231B]">
+                    <span>{isUrdu ? `راؤنڈ ${turn.round}` : `Round ${turn.round}`}</span>
+                    <span className="font-mono text-[#14231B]" dir="ltr">
                       Spread: ₨ {Math.abs(turn.farmerOffer - turn.buyerOffer)}/kg
                     </span>
                   </div>
@@ -346,8 +352,8 @@ function NegotiationContent({ id }: { id: string }) {
                     </div>
                     <div className="bg-[#F5FAF6] border border-[#BDE0CB] rounded-2xl p-3 text-xs text-[#14231B]">
                       <div className="flex items-center justify-between gap-4 mb-1 font-bold text-[#0F3E2E]">
-                        <span>Farmer Tariq</span>
-                        <span>Ask: ₨ {turn.farmerOffer}/kg</span>
+                        <span>{isUrdu ? "کسان طارق" : "Farmer Tariq"}</span>
+                        <span dir="ltr">Ask: ₨ {turn.farmerOffer}/kg</span>
                       </div>
                       <p className="leading-relaxed">{turn.farmerMessage}</p>
                     </div>
@@ -361,7 +367,7 @@ function NegotiationContent({ id }: { id: string }) {
                     <div className="bg-[#FAF8F3] border border-[#EAE4D8] rounded-2xl p-3 text-xs text-[#14231B] text-right">
                       <div className="flex items-center justify-between gap-4 mb-1 font-bold text-[#3730A3] flex-row-reverse">
                         <span>{buyerName}</span>
-                        <span>Bid: ₨ {turn.buyerOffer}/kg</span>
+                        <span dir="ltr">Bid: ₨ {turn.buyerOffer}/kg</span>
                       </div>
                       <p className="leading-relaxed">{turn.buyerMessage}</p>
                     </div>
@@ -372,12 +378,12 @@ function NegotiationContent({ id }: { id: string }) {
                     {turn.verified ? (
                       <span className="inline-flex items-center gap-1 text-[#0F3E2E] bg-[#E8F3EC] px-2.5 py-0.5 rounded-full border border-[#BDE0CB] font-bold">
                         <CheckCircle2 className="w-3 h-3 text-emerald-700" />
-                        <span>All numerical offers deterministically verified ✓</span>
+                        <span>{isUrdu ? "تمام پیشکشوں کی شماریاتی تصدیق مکمل ✓" : "All numerical offers deterministically verified ✓"}</span>
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-[#92400E] bg-[#FEF3C7] px-2.5 py-0.5 rounded-full border border-[#FCD34D] font-bold">
                         <AlertCircle className="w-3 h-3 text-amber-700" />
-                        <span>Statistical Projection</span>
+                        <span>{isUrdu ? "شماریاتی تخمینہ" : "Statistical Projection"}</span>
                       </span>
                     )}
                   </div>

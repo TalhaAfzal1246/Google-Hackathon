@@ -13,18 +13,23 @@ import {
   CartesianGrid,
 } from "recharts";
 import { MarketRecord } from "@/lib/types";
+import { Language } from "@/lib/i18n";
 
 interface SpreadChartProps {
   records: MarketRecord[];
   onSelectRecord?: (rec: MarketRecord) => void;
   selectedDate?: string;
+  lang?: Language;
 }
 
 export default function SpreadChart({
   records,
   onSelectRecord,
   selectedDate,
+  lang = "ur",
 }: SpreadChartProps) {
+  const isUrdu = lang === "ur";
+
   const chartData = useMemo(() => {
     // Take the last 60 records
     return records.slice(-60).map((r) => ({
@@ -41,33 +46,37 @@ export default function SpreadChart({
   }, [records]);
 
   return (
-    <div className="bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
+    <div className={`bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
         <div>
           <h3 className="font-black text-[#14231B] text-sm sm:text-base">
-            Farmgate to Retail Mandi Spread Monitor (60-Day Window)
+            {isUrdu
+              ? "فارم گیٹ تا ریٹیل منڈی مارجن مانیٹر (60 روزہ جائزہ)"
+              : "Farmgate to Retail Mandi Spread Monitor (60-Day Window)"}
           </h3>
           <p className="text-xs text-[#55695C] font-medium">
-            Click on any anomaly point (highlighted in red) to inspect the middleman cost decomposition.
+            {isUrdu
+              ? "غیر معمولی منافع اور کٹوتیوں کی تفصیلی لاگت دیکھنے کے لیے لال نشان پر کلک کریں۔"
+              : "Click on any anomaly point (highlighted in red) to inspect the middleman cost decomposition."}
           </p>
         </div>
-        <div className="flex items-center gap-3 text-xs">
-          <span className="flex items-center gap-1.5 text-slate-600">
-            <span className="w-3 h-0.5 bg-emerald-600 inline-block" />
-            Farmgate
+        <div className="flex items-center gap-3 text-xs flex-wrap" dir="ltr">
+          <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
+            <span className="w-3 h-1 bg-emerald-600 rounded-full inline-block" />
+            <span>{isUrdu ? "فارم گیٹ ریٹ" : "Farmgate"}</span>
           </span>
-          <span className="flex items-center gap-1.5 text-slate-600">
-            <span className="w-3 h-0.5 bg-indigo-600 inline-block" />
-            Retail
+          <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
+            <span className="w-3 h-1 bg-indigo-600 rounded-full inline-block" />
+            <span>{isUrdu ? "ریٹیل قیمت" : "Retail"}</span>
           </span>
-          <span className="flex items-center gap-1.5 text-rose-600 font-semibold">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-            Exploitative Anomaly
+          <span className="flex items-center gap-1.5 text-[#991B1B] font-bold">
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block animate-pulse" />
+            <span>{isUrdu ? "غیر معمولی کٹوتی" : "Cartel Anomaly"}</span>
           </span>
         </div>
       </div>
 
-      <div className="h-[280px] w-full">
+      <div className="h-[280px] w-full" dir="ltr">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={chartData}
@@ -87,26 +96,26 @@ export default function SpreadChart({
                 if (active && payload && payload.length) {
                   const d = payload[0].payload;
                   return (
-                    <div className="bg-slate-900 text-white rounded-xl p-3 text-xs shadow-xl border border-slate-700 min-w-[170px]">
-                      <div className="font-bold text-slate-300 border-b border-slate-700 pb-1 mb-1.5 flex justify-between">
+                    <div className="bg-[#14231B] text-white rounded-2xl p-3 text-xs shadow-xl border border-[#2A3B30] min-w-[190px]">
+                      <div className="font-bold text-[#A7D9C0] border-b border-[#2A3B30] pb-1.5 mb-2 flex justify-between items-center">
                         <span>Date: {d.fullDate}</span>
                         {d.isAnomaly && (
-                          <span className="text-rose-400 font-bold uppercase text-[10px]">
-                            Cartel Anomaly!
+                          <span className="text-[#FECACA] bg-[#991B1B] px-1.5 py-0.5 rounded text-[10px] font-black uppercase">
+                            {isUrdu ? "غیر معمولی منافع!" : "Cartel Anomaly!"}
                           </span>
                         )}
                       </div>
                       <div className="flex justify-between py-0.5">
-                        <span className="text-slate-400">Farmgate Price:</span>
-                        <span className="font-bold text-emerald-400">₨ {d.farmgate}/kg</span>
+                        <span className="text-stone-300">{isUrdu ? "کسان کو ملا:" : "Farmgate Price:"}</span>
+                        <span className="font-bold text-emerald-400" dir="ltr">₨ {d.farmgate}/kg</span>
                       </div>
                       <div className="flex justify-between py-0.5">
-                        <span className="text-slate-400">Retail City Price:</span>
-                        <span className="font-bold text-indigo-400">₨ {d.retail}/kg</span>
+                        <span className="text-stone-300">{isUrdu ? "ریٹیل قیمت:" : "Retail City Price:"}</span>
+                        <span className="font-bold text-indigo-300" dir="ltr">₨ {d.retail}/kg</span>
                       </div>
-                      <div className="flex justify-between py-0.5 border-t border-slate-800 mt-1">
-                        <span className="text-slate-400">Total Spread:</span>
-                        <span className={`font-bold ${d.isAnomaly ? "text-rose-400" : "text-slate-300"}`}>
+                      <div className="flex justify-between py-1 border-t border-[#2A3B30] mt-1.5">
+                        <span className="text-stone-300 font-medium">{isUrdu ? "کل منافع مارجن:" : "Total Spread:"}</span>
+                        <span className={`font-black ${d.isAnomaly ? "text-[#FECACA]" : "text-white"}`} dir="ltr">
                           ₨ {d.spread}/kg
                         </span>
                       </div>

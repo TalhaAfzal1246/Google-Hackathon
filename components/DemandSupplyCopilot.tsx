@@ -57,12 +57,25 @@ export default function DemandSupplyCopilot({
     setActiveVoiceLang(null);
   };
 
+  const cropUrduMap: Record<string, string> = {
+    tomato: "ٹماٹر",
+    onion: "پیاز",
+    potato: "آلو",
+    wheat: "گندم",
+    rice_basmati: "چاول",
+    Tomato: "ٹماٹر",
+    Onion: "پیاز",
+    Potato: "آلو",
+    Wheat: "گندم",
+  };
+  const cropDisplay = isUrdu ? (cropUrduMap[currentCrop] || currentCrop) : currentCrop;
+
   const suggestedQuestions = isUrdu
     ? [
-        `آج ${currentCrop} کا بھاؤ کیوں بدل رہا ہے؟`,
+        `آج ${cropDisplay} کا بھاؤ کیوں بدل رہا ہے؟`,
         `منڈی میں ${arrivals} ٹن مال آنے سے قیمتوں پر کیا اثر ہوگا؟`,
-        `کیا مجھے ${currentCrop} ابھی بیچنا چاہیے یا کچھ دن روکوں؟`,
-        `ڈیزل اور ٹرانسپورٹ کرایہ بڑھنے سے کسان کو کیا نقصان ہوگا؟`,
+        `کیا مجھے ${cropDisplay} ابھی بیچنا چاہیے یا کچھ دن روکوں؟`,
+        `ڈیزل اور ٹرانسپورٹ کرایہ بڑھنے سے کسان کو کیا اثر پڑے گا؟`,
       ]
     : [
         `Why are ${currentCrop} prices projected to change next week?`,

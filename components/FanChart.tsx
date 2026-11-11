@@ -14,6 +14,7 @@ import {
   ReferenceLine,
 } from "recharts";
 import { HorizonQuantile, MarketRecord } from "@/lib/types";
+import { Language } from "@/lib/i18n";
 
 interface FanChartProps {
   history: MarketRecord[];
@@ -21,6 +22,7 @@ interface FanChartProps {
   asOfDate: string;
   showReplay: boolean;
   bestStep: number;
+  lang?: Language;
 }
 
 export default function FanChart({
@@ -29,7 +31,10 @@ export default function FanChart({
   asOfDate,
   showReplay,
   bestStep,
+  lang = "ur",
 }: FanChartProps) {
+  const isUrdu = lang === "ur";
+
   const chartData = useMemo(() => {
     // 1. Take up to 20 past historical points leading to asOfDate
     const past = history.slice(-20).map((r) => ({
@@ -85,35 +90,37 @@ export default function FanChart({
   }, [history, horizons, asOfDate, showReplay]);
 
   return (
-    <div className="w-full bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs">
+    <div className={`w-full bg-[#FEFDFB] rounded-3xl border border-[#EAE4D8] p-5 sm:p-6 shadow-xs ${isUrdu ? "font-urdu" : ""}`} dir={isUrdu ? "rtl" : "ltr"}>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
         <div>
           <h3 className="font-extrabold text-[#14231B] text-base flex items-center gap-2">
-            Mandi Price Trajectory & Empirical Uncertainty Cone
+            {isUrdu ? "منڈی قیمتوں کا شماریاتی پھیلاؤ اور پیش گوئی کون" : "Mandi Price Trajectory & Empirical Uncertainty Cone"}
           </h3>
           <p className="text-xs text-[#55695C] font-medium">
-            Solid line shows historical arrivals; shaded fan indicates P10–P90 empirical statistical confidence bounds.
+            {isUrdu
+              ? "مستقل لکیر ماضی کے ریٹس کو ظاہر کرتی ہے؛ سایہ دار حصہ P10 تا P90 متوقع ممکنہ قیمتوں کی حد ہے۔"
+              : "Solid line shows historical arrivals; shaded fan indicates P10–P90 empirical statistical confidence bounds."}
           </p>
         </div>
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex items-center gap-3 text-xs flex-wrap" dir="ltr">
           <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
             <span className="w-3 h-3 rounded-full bg-[#0F3E2E] inline-block" />
-            P50 Median
+            <span>{isUrdu ? "میڈین (P50)" : "P50 Median"}</span>
           </span>
           <span className="flex items-center gap-1.5 text-[#55695C] font-semibold">
             <span className="w-3 h-3 rounded bg-[#E8F3EC] border border-[#BDE0CB] inline-block" />
-            Fair Band (P25-P75)
+            <span>{isUrdu ? "منصفانہ حد (P25-P75)" : "Fair Band (P25-P75)"}</span>
           </span>
           {showReplay && (
             <span className="flex items-center gap-1.5 text-rose-700 font-bold">
               <span className="w-3 h-0.5 bg-rose-500 inline-block" />
-              Realized Market Reality
+              <span>{isUrdu ? "حقیقی منڈی ریٹ" : "Realized Market"}</span>
             </span>
           )}
         </div>
       </div>
 
-      <div className="h-[320px] w-full">
+      <div className="h-[320px] w-full" dir="ltr">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={chartData} margin={{ top: 10, right: 15, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -128,38 +135,38 @@ export default function FanChart({
                 if (active && payload && payload.length) {
                   const d = payload[0].payload;
                   return (
-                    <div className="bg-slate-900 text-white rounded-xl p-3 text-xs shadow-xl border border-slate-700 min-w-[170px]">
-                      <div className="font-bold text-slate-300 border-b border-slate-700 pb-1 mb-1.5 flex justify-between">
+                    <div className="bg-[#14231B] text-white rounded-2xl p-3 text-xs shadow-xl border border-[#2A3B30] min-w-[190px]">
+                      <div className="font-bold text-[#A7D9C0] border-b border-[#2A3B30] pb-1 mb-1.5 flex justify-between">
                         <span>Date: {label}</span>
                         {d.isForecast && (
-                          <span className="text-emerald-400 font-semibold">+{d.horizon_days}d Forecast</span>
+                          <span className="text-emerald-400 font-bold">+{d.horizon_days}d Forecast</span>
                         )}
                       </div>
                       {d.historical !== null && (
                         <div className="flex justify-between py-0.5">
-                          <span className="text-slate-400">Recorded Price:</span>
+                          <span className="text-stone-300">{isUrdu ? "ماضی کا ریٹ:" : "Recorded Price:"}</span>
                           <span className="font-bold text-emerald-400">₨ {d.historical}/kg</span>
                         </div>
                       )}
                       {d.p50 !== null && (
                         <>
                           <div className="flex justify-between py-0.5">
-                            <span className="text-slate-400">P50 Median:</span>
+                            <span className="text-stone-300">{isUrdu ? "متوقع میڈین ریٹ:" : "P50 Median:"}</span>
                             <span className="font-bold text-emerald-300">₨ {d.p50}/kg</span>
                           </div>
                           <div className="flex justify-between py-0.5">
-                            <span className="text-slate-400">P25 - P75 Band:</span>
-                            <span className="font-mono text-slate-200">₨ {d.p25} - {d.p75}</span>
+                            <span className="text-stone-300">{isUrdu ? "منصفانہ حد:" : "P25 - P75 Band:"}</span>
+                            <span className="font-mono text-stone-200">₨ {d.p25} - {d.p75}</span>
                           </div>
                           <div className="flex justify-between py-0.5">
-                            <span className="text-slate-400">P10 - P90 Cone:</span>
-                            <span className="font-mono text-slate-400">₨ {d.p10} - {d.p90}</span>
+                            <span className="text-stone-300">{isUrdu ? "ممکنہ پھیلاؤ:" : "P10 - P90 Cone:"}</span>
+                            <span className="font-mono text-stone-300">₨ {d.p10} - {d.p90}</span>
                           </div>
                         </>
                       )}
                       {showReplay && d.realized !== null && (
-                        <div className="flex justify-between py-0.5 mt-1 border-t border-slate-800 text-rose-300">
-                          <span>Actual Realized:</span>
+                        <div className="flex justify-between py-0.5 mt-1 border-t border-[#2A3B30] text-[#FECACA]">
+                          <span>{isUrdu ? "اصل ریٹ:" : "Actual Realized:"}</span>
                           <span className="font-bold">₨ {d.realized}/kg</span>
                         </div>
                       )}
@@ -225,7 +232,7 @@ export default function FanChart({
               x={asOfDate.substring(5)}
               stroke="#94a3b8"
               strokeDasharray="2 2"
-              label={{ value: "As-Of Point", position: "top", fill: "#64748b", fontSize: 10 }}
+              label={{ value: isUrdu ? "آج کا دن" : "As-Of Point", position: "top", fill: "#64748b", fontSize: 10 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

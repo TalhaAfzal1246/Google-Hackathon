@@ -36,9 +36,10 @@ export default function MarketTicker({ lang }: MarketTickerProps) {
           {LIVE_MANDI_ITEMS.map((item, idx) => (
             <div key={idx} className="flex items-center gap-2 shrink-0 text-[11px]">
               <span className="font-semibold text-[#D1E7DD]">{item.crop}:</span>
-              <span className="font-black text-[#FDE68A]">{item.rate}</span>
-              <span className="text-[#A7D9C0] font-semibold">({item.maund})</span>
+              <span dir="ltr" className="font-black text-[#FDE68A]">{item.rate}</span>
+              <span dir="ltr" className="text-[#A7D9C0] font-semibold">({item.maund})</span>
               <span
+                dir="ltr"
                 className={`inline-flex items-center font-bold text-[10px] px-1.5 py-0.5 rounded ${
                   item.up ? "text-emerald-300 bg-emerald-950/80" : "text-rose-300 bg-rose-950/80"
                 }`}

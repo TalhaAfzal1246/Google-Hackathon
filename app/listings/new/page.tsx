@@ -89,7 +89,9 @@ function ListingFormContent() {
             {isUrdu ? "منصفانہ منڈی میں فصل فروخت کے لیے پیش کریں" : "List Harvest Batch for Fair Trade"}
           </h1>
           <p className="text-xs text-[#55695C] mt-1 mb-6 font-medium">
-            Pre-filled with statistical floor price and quantity from your predictive harvest advisory.
+            {isUrdu
+              ? "پیش گوئی اور مشورے کے مطابق خودکار طریقے سے کم از کم قیمت اور وزن درج ہے۔"
+              : "Pre-filled with statistical floor price and quantity from your predictive harvest advisory."}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

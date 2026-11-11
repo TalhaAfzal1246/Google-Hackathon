@@ -135,7 +135,7 @@ export default function AssumptionSliders({
         {/* Transport cost */}
         <div className="bg-[#FAF8F3] p-3.5 rounded-2xl border border-[#EAE4D8]">
           <div className="flex justify-between items-center text-xs mb-1.5">
-            <span className="text-[#55695C] font-semibold">Freight & Fuel (PKR/kg)</span>
+            <span className="text-[#55695C] font-semibold">{isUrdu ? "کرایہ و ایندھن (روپے/کلو)" : "Freight & Fuel (PKR/kg)"}</span>
             <span className="font-black text-[#14231B]">₨ {transport.toFixed(1)}</span>
           </div>
           <input

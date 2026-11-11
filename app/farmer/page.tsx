@@ -352,23 +352,25 @@ export default function FarmerPage() {
           <div className="bg-[#092418] p-1.5 rounded-2xl border border-[#164D35] flex items-center gap-1 shrink-0">
             <button
               onClick={() => setShowAdvanced(false)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
                 !showAdvanced
                   ? "bg-[#D97706] text-white shadow-xs"
                   : "text-[#A7D9C0] hover:text-white"
               }`}
             >
-              {isUrdu ? "🌾 سادہ کسان موڈ" : "🌾 Simple Mode"}
+              <Sprout className="w-3.5 h-3.5 text-[#FBBF24]" />
+              <span>{isUrdu ? "سادہ کسان موڈ" : "Simple Mode"}</span>
             </button>
             <button
               onClick={() => setShowAdvanced(true)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
                 showAdvanced
                   ? "bg-[#FEFDFB] text-[#1E2621] shadow-xs"
                   : "text-[#A7D9C0] hover:text-white"
               }`}
             >
-              {isUrdu ? "📊 تفصیلی تجزیہ" : "📊 Analyst Mode"}
+              <BarChart3 className="w-3.5 h-3.5 text-emerald-700" />
+              <span>{isUrdu ? "تفصیلی تجزیہ" : "Analyst Mode"}</span>
             </button>
           </div>
         </div>
@@ -417,10 +419,10 @@ export default function FarmerPage() {
 
                   <div className="mt-3 pt-2.5 border-t border-[#EAE4D8]">
                     <div className="text-xs font-black text-[#0F3E2E]">
-                      ₨ {mandiPrice}/kg
+                      {isUrdu ? `${mandiPrice} روپے / کلو` : `₨ ${mandiPrice}/kg`}
                     </div>
                     <div className="text-[10px] text-[#55695C] font-bold">
-                      ₨ {maundPrice.toLocaleString()}/من
+                      {isUrdu ? `${maundPrice.toLocaleString()} روپے / من` : `₨ ${maundPrice.toLocaleString()}/maund`}
                     </div>
                   </div>
                 </button>
@@ -494,7 +496,7 @@ export default function FarmerPage() {
                           : "bg-[#FAF8F3] text-[#2A3B30] border-[#EAE4D8] hover:bg-[#F2ECE1]"
                       }`}
                     >
-                      {s.maund} {isUrdu ? "من" : "Maunds"} ({s.kg.toLocaleString()} kg)
+                      {isUrdu ? `${s.maund} من (${s.kg.toLocaleString()} کلو)` : `${s.maund} Maunds (${s.kg.toLocaleString()} kg)`}
                     </button>
                   );
                 })}
@@ -523,7 +525,7 @@ export default function FarmerPage() {
             </div>
 
             <div className="text-[11px] text-[#7A8C80] font-medium mt-3">
-              1 Maund (من) = 40 kg standard agricultural unit in Pakistan.
+              {isUrdu ? "1 من = 40 کلوگرام (پاکستان کا معیاری زرعی پیمانہ)" : "1 Maund (من) = 40 kg standard agricultural unit in Pakistan."}
             </div>
           </div>
         </div>
@@ -785,6 +787,7 @@ export default function FarmerPage() {
                   asOfDate={selectedAsOfDate}
                   showReplay={showReplay}
                   bestStep={computedVerdict.bestStep}
+                  lang={lang}
                 />
               )}
 
@@ -803,6 +806,7 @@ export default function FarmerPage() {
                 horizons={activeEvaluation?.horizons || []}
                 todayPrice={todayMandiPrice}
                 bestStep={computedVerdict.bestStep}
+                lang={lang}
               />
 
               {/* Holding Cost Assumption Sliders */}

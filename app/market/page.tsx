@@ -109,7 +109,9 @@ export default function MarketPage() {
               <span>{isUrdu ? "منصفانہ منڈی اور تصدیق شدہ خریدار" : "Wholesale Commodity Exchange & Buyer Matches"}</span>
             </h1>
             <p className="text-xs sm:text-sm text-[#55695C] mt-1 font-medium">
-              Direct institutional wholesale trading without exploitative arthi commission intermediaries.
+              {isUrdu
+                ? "آڑھتی کمیشن اور ناجائز کٹوتیوں کے بغیر کسانوں اور ہول سیل خریداروں کا براہ راست رابطہ۔"
+                : "Direct institutional wholesale trading without exploitative arthi commission intermediaries."}
             </p>
           </div>
 
@@ -120,7 +122,7 @@ export default function MarketPage() {
               className="flex items-center gap-1.5 px-3.5 py-2 bg-[#FEFDFB] border border-[#EAE4D8] text-[#2A3B30] hover:bg-[#FAF8F3] rounded-xl text-xs font-bold shadow-2xs transition-all"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-emerald-700" : ""}`} />
-              <span>Refresh Feed</span>
+              <span>{isUrdu ? "تازہ کریں" : "Refresh Feed"}</span>
             </button>
 
             <Link
@@ -141,7 +143,7 @@ export default function MarketPage() {
               <h2 className="text-sm font-black text-[#14231B] flex items-center gap-2">
                 <span>{isUrdu ? "فعال منڈی لاٹس" : "Active Mandi Lots"}</span>
                 <span className="text-[11px] font-bold bg-[#E8F3EC] text-[#0F3E2E] px-2 py-0.5 rounded-full border border-[#BDE0CB]">
-                  {listings.length} Lots
+                  {listings.length} {isUrdu ? "لاٹس" : "Lots"}
                 </span>
               </h2>
             </div>
@@ -162,6 +164,18 @@ export default function MarketPage() {
               <div className="space-y-3">
                 {listings.map((lst) => {
                   const isSelected = selectedListing?.id === lst.id;
+                  const cropNameLocalized = isUrdu
+                    ? lst.cropName.toLowerCase().includes("tomato")
+                      ? "ٹماٹر"
+                      : lst.cropName.toLowerCase().includes("onion")
+                      ? "پیاز"
+                      : lst.cropName.toLowerCase().includes("potato")
+                      ? "آلو"
+                      : lst.cropName.toLowerCase().includes("wheat")
+                      ? "گندم"
+                      : lst.cropName
+                    : lst.cropName;
+
                   return (
                     <div
                       key={lst.id}
@@ -176,10 +190,10 @@ export default function MarketPage() {
                         <div>
                           <div className="flex items-center gap-1.5">
                             <span className="font-extrabold text-[#14231B] text-sm sm:text-base">
-                              {lst.qtyKg.toLocaleString()} kg {lst.cropName}
+                              {lst.qtyKg.toLocaleString()} {isUrdu ? `کلوگرام ${cropNameLocalized}` : `kg ${cropNameLocalized}`}
                             </span>
                             <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-[#FAF8F3] text-[#55695C] border border-[#EAE4D8]">
-                              {lst.status}
+                              {isUrdu ? "فعال" : lst.status}
                             </span>
                           </div>
                           <p className="text-xs text-[#55695C] mt-0.5">{lst.farmerName}</p>
@@ -187,7 +201,7 @@ export default function MarketPage() {
 
                         <div className="text-right">
                           <div className="text-[10px] text-[#55695C] font-semibold">{isUrdu ? "کم سے کم ریٹ" : "Floor Price"}</div>
-                          <div className="text-base font-black text-[#0F3E2E]">
+                          <div className="text-base font-black text-[#0F3E2E]" dir="ltr">
                             ₨ {lst.floorPrice}
                             <span className="text-[10px] font-normal text-[#55695C]">/kg</span>
                           </div>
@@ -201,7 +215,7 @@ export default function MarketPage() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Scale className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Batch Lot</span>
+                          <span>{isUrdu ? "لاٹ بیچ" : "Batch Lot"}</span>
                         </span>
                       </div>
                     </div>
@@ -217,17 +231,17 @@ export default function MarketPage() {
               <h2 className="text-sm font-black text-[#14231B] flex items-center gap-2">
                 <span>{isUrdu ? "تصدیق شدہ خریدار اور میچنگ" : "Verified Institutional Commodity Buyers"}</span>
                 <span className="text-[11px] font-bold bg-[#E8F3EC] text-[#0F3E2E] px-2 py-0.5 rounded-full border border-[#BDE0CB]">
-                  {matches.length} Matches
+                  {matches.length} {isUrdu ? "خریدار" : "Matches"}
                 </span>
               </h2>
               <span className="text-xs text-[#55695C] font-semibold">
-                Ranked by Price Fit, Trust &amp; Distance
+                {isUrdu ? "قیمت، اعتماد اور فاصلے کی درجہ بندی" : "Ranked by Price Fit, Trust & Distance"}
               </span>
             </div>
 
             {matches.length === 0 ? (
               <div className="bg-[#FEFDFB] p-8 rounded-3xl border border-[#EAE4D8] text-center text-xs text-[#7A8C80]">
-                Select a listing on the left to see ranked buyer matches.
+                {isUrdu ? "خریداروں کی فہرست دیکھنے کے لیے بائیں جانب سے کوئی لاٹ منتخب کریں۔" : "Select a listing on the left to see ranked buyer matches."}
               </div>
             ) : (
               <div className="space-y-3">
@@ -251,16 +265,16 @@ export default function MarketPage() {
                               </span>
                             </div>
                             <p className="text-xs text-[#55695C] mt-0.5">
-                              {b.city} &bull; {m.distanceKm} km away &bull; {b.payment_terms}
+                              {b.city} &bull; {m.distanceKm} {isUrdu ? "کلومیٹر فاصلہ" : "km away"} &bull; {b.payment_terms}
                             </p>
                           </div>
                         </div>
 
                         {/* Match Score Badge */}
                         <div className="text-left sm:text-right">
-                          <div className="text-[10px] text-[#55695C] font-bold">Match Compatibility</div>
-                          <div className="text-lg font-black text-[#0F3E2E]">
-                            {Math.round(m.totalScore * 100)}% Match
+                          <div className="text-[10px] text-[#55695C] font-bold">{isUrdu ? "مطابقت کا تناسب" : "Match Compatibility"}</div>
+                          <div className="text-lg font-black text-[#0F3E2E]" dir="ltr">
+                            {Math.round(m.totalScore * 100)}% {isUrdu ? "میچ" : "Match"}
                           </div>
                         </div>
                       </div>
@@ -269,28 +283,28 @@ export default function MarketPage() {
                       <div className="grid grid-cols-3 gap-2 bg-[#FAF8F3] p-3 rounded-2xl text-center text-xs mb-4 border border-[#EAE4D8]">
                         <div>
                           <div className="text-[10px] text-[#55695C] font-semibold">{isUrdu ? "خریدار کی حد" : "Buyer Ceiling"}</div>
-                          <div className="font-black text-[#14231B] mt-0.5">
+                          <div className="font-black text-[#14231B] mt-0.5" dir="ltr">
                             ₨ {Math.round((selectedListing?.floorPrice || 65) * b.ceiling_mult)}/kg
                           </div>
                         </div>
                         <div>
                           <div className="text-[10px] text-[#55695C] font-semibold">{isUrdu ? "اعتماد ریٹنگ" : "Trust Score"}</div>
-                          <div className="font-black text-[#0F3E2E] mt-0.5">
+                          <div className="font-black text-[#0F3E2E] mt-0.5" dir="ltr">
                             ★ {Math.round(b.trust_score * 100)}%
                           </div>
                         </div>
                         <div>
                           <div className="text-[10px] text-[#55695C] font-semibold">{isUrdu ? "ابتدائی پیشکش" : "Opening Bid"}</div>
-                          <div className="font-black text-[#853E06] mt-0.5">
+                          <div className="font-black text-[#853E06] mt-0.5" dir="ltr">
                             ₨ {m.suggestedOpeningOffer}/kg
                           </div>
                         </div>
                       </div>
 
                       {/* Action */}
-                      <div className="flex items-center justify-between pt-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                         <span className="text-xs text-[#55695C] font-medium">
-                          Bilateral settlement protected with fair-trade guardrails.
+                          {isUrdu ? "منصفانہ تجارتی حدود اور قانونی تحفظ کے تحت دوطرفہ تصفیہ۔" : "Bilateral settlement protected with fair-trade guardrails."}
                         </span>
                         <Link
                           href={`/negotiate/${selectedListing?.id || "lst_01"}?buyerId=${b.id}&buyerName=${encodeURIComponent(
@@ -298,7 +312,7 @@ export default function MarketPage() {
                           )}&crop=${selectedListing?.cropName || "Tomato"}&qty=${
                             selectedListing?.qtyKg || 3000
                           }&floor=${selectedListing?.floorPrice || 65}`}
-                          className="flex items-center gap-1.5 px-4 py-2 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-xl text-xs font-black shadow-xs transition-all active:scale-95"
+                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F3E2E] hover:bg-[#144E3A] text-white rounded-xl text-xs font-black shadow-xs transition-all active:scale-95 shrink-0"
                         >
                           <span>{isUrdu ? "سودا شروع کریں" : "Enter Deal Room"}</span>
                           <ArrowIcon className="w-3.5 h-3.5" />

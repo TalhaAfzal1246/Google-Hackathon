@@ -29,6 +29,9 @@ import {
   ArrowLeft,
   Building2,
   Layers,
+  Snowflake,
+  Sun,
+  Flower2,
 } from "lucide-react";
 
 export default function PlannerPage() {
@@ -209,7 +212,9 @@ export default function PlannerPage() {
                     : "border-[#EAE4D8] hover:border-[#DCD3C3] bg-[#FAF8F3] text-[#2A3B30]"
                 }`}
               >
-                <span className="text-3xl">❄️</span>
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
+                  <Snowflake className="w-5 h-5" />
+                </div>
                 <div className="text-left">
                   <div className="font-extrabold text-sm sm:text-base text-[#14231B]">
                     {isUrdu ? "ربیع سیزن (سردیاں)" : "Rabi Season (Winter)"}
@@ -229,7 +234,9 @@ export default function PlannerPage() {
                     : "border-[#EAE4D8] hover:border-[#DCD3C3] bg-[#FAF8F3] text-[#2A3B30]"
                 }`}
               >
-                <span className="text-3xl">☀️</span>
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200">
+                  <Sun className="w-5 h-5" />
+                </div>
                 <div className="text-left">
                   <div className="font-extrabold text-sm sm:text-base text-[#14231B]">
                     {isUrdu ? "خریف سیزن (گرمیاں)" : "Kharif Season (Summer)"}
@@ -249,7 +256,9 @@ export default function PlannerPage() {
                     : "border-[#EAE4D8] hover:border-[#DCD3C3] bg-[#FAF8F3] text-[#2A3B30]"
                 }`}
               >
-                <span className="text-3xl">🌸</span>
+                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200">
+                  <Flower2 className="w-5 h-5" />
+                </div>
                 <div className="text-left">
                   <div className="font-extrabold text-sm sm:text-base text-[#14231B]">
                     {isUrdu ? "بہاریہ سیزن (درمیانی سہ ماہی)" : "Zaid / Spring Season"}
@@ -377,10 +386,10 @@ export default function PlannerPage() {
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 bg-[#D97706] text-white px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-xs">
                   <Award className="w-4 h-4 text-[#FDE68A]" />
-                  <span>{isUrdu ? "🥇 نمبر 1 سب سے زیادہ منافع بخش فصل" : "🥇 #1 Top Recommendation"}</span>
+                  <span>{isUrdu ? "نمبر 1 سب سے زیادہ منافع بخش فصل" : "#1 Top Recommendation"}</span>
                 </span>
 
-                <span className="inline-flex items-center gap-1 text-xs text-[#2A3B30] bg-[#FEFDFB] border border-[#EAE4D8] px-3 py-1 rounded-full font-bold shadow-2xs">
+                <span dir="ltr" className="inline-flex items-center gap-1 text-xs text-[#2A3B30] bg-[#FEFDFB] border border-[#EAE4D8] px-3 py-1 rounded-full font-bold shadow-2xs">
                   <TrendingUp className="w-3.5 h-3.5 text-emerald-700" />
                   <span>+{topCrop.roiPercent}% ROI</span>
                 </span>
@@ -478,10 +487,10 @@ export default function PlannerPage() {
                     {isUrdu ? `آپ کے ${acres} ایکڑ پر متوقع خالص منافع:` : `Projected Net Profit on ${acres} Acres:`}
                   </span>
                   <div className="text-3xl sm:text-4xl font-black text-[#FDE68A] mt-1">
-                    +₨ {topCrop.totalNetProfitPkr.toLocaleString()}
+                    {isUrdu ? `+${topCrop.totalNetProfitPkr.toLocaleString()} روپے` : `+₨ ${topCrop.totalNetProfitPkr.toLocaleString()}`}
                   </div>
                   <div className="text-xs text-[#A7D9C0] font-bold mt-1">
-                    +₨ {topCrop.netProfitPerAcre.toLocaleString()} {isUrdu ? "فی ایکڑ خالص بچت" : "/acre net profit"}
+                    {isUrdu ? `+${topCrop.netProfitPerAcre.toLocaleString()} روپے فی ایکڑ خالص منافع` : `+₨ ${topCrop.netProfitPerAcre.toLocaleString()} /acre net profit`}
                   </div>
                 </div>
 
@@ -491,10 +500,10 @@ export default function PlannerPage() {
                     {isUrdu ? "متوقع کل لاگت" : "Total Investment"}
                   </span>
                   <div className="text-xl sm:text-2xl font-black text-[#14231B] mt-0.5">
-                    ₨ {topCrop.totalCostPkr.toLocaleString()}
+                    {isUrdu ? `${topCrop.totalCostPkr.toLocaleString()} روپے` : `₨ ${topCrop.totalCostPkr.toLocaleString()}`}
                   </div>
                   <div className="text-[11px] text-[#55695C] font-semibold">
-                    ₨ {topCrop.costPerAcre.toLocaleString()}/ایکڑ
+                    {isUrdu ? `${topCrop.costPerAcre.toLocaleString()} روپے/ایکڑ` : `₨ ${topCrop.costPerAcre.toLocaleString()}/acre`}
                   </div>
                 </div>
 
@@ -504,11 +513,10 @@ export default function PlannerPage() {
                     {isUrdu ? "متوقع منڈی ریٹ" : "Harvest Mandi Rate"}
                   </span>
                   <div className="text-xl sm:text-2xl font-black text-[#0F3E2E] mt-0.5">
-                    ₨ {topCrop.expectedHarvestPricePerMaund.toLocaleString()}
-                    <span className="text-xs font-normal text-[#55695C]">/من</span>
+                    {isUrdu ? `${topCrop.expectedHarvestPricePerMaund.toLocaleString()} روپے / من` : `₨ ${topCrop.expectedHarvestPricePerMaund.toLocaleString()}/من`}
                   </div>
                   <div className="text-[11px] text-[#55695C] font-semibold">
-                    ₨ {topCrop.expectedHarvestPricePerKg}/kg
+                    {isUrdu ? `${topCrop.expectedHarvestPricePerKg} روپے فی کلو` : `₨ ${topCrop.expectedHarvestPricePerKg}/kg`}
                   </div>
                 </div>
               </div>

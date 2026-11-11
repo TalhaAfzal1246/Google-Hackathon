@@ -46,7 +46,9 @@ export default function CopilotPage() {
             {t.demandSupplyCopilot}
           </h1>
           <p className="text-xs sm:text-sm text-[#55695C] mt-1 max-w-2xl font-medium">
-            Inquire about harvest calendars, wholesale mandi elasticities, transport freight impacts, or regional price transmission in Pakistan.
+            {isUrdu
+              ? "فصلوں کی کٹائی کے کیلنڈر، ہول سیل منڈی طلب و رسد، مال برداری ایندھن اخراجات، اور علاقائی قیمتوں سے متعلق سوالات پوچھیں۔"
+              : "Inquire about harvest calendars, wholesale mandi elasticities, transport freight impacts, or regional price transmission in Pakistan."}
           </p>
         </div>
 
@@ -66,9 +68,13 @@ export default function CopilotPage() {
             <div className="w-9 h-9 rounded-xl bg-[#E8F3EC] text-[#0F3E2E] flex items-center justify-center mb-3 border border-[#BDE0CB]">
               <Lightbulb className="w-4 h-4 text-emerald-800" />
             </div>
-            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">Inelastic Staples</h4>
+            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">
+              {isUrdu ? "ضروری اجناس اور قیمتیں" : "Inelastic Staples"}
+            </h4>
             <p className="text-xs text-[#55695C] leading-relaxed font-medium">
-              Onions and tomatoes exhibit high price inelasticity in Pakistani urban centers. A 15% arrival drop can trigger a 40%+ auction price surge.
+              {isUrdu
+                ? "پیاز اور ٹماٹر جیسی بنیادی اجناس کی طلب مستقل رہتی ہے۔ منڈی میں آمد میں 15 فیصد کمی بھی قیمتوں میں 40 فیصد سے زائد کا اچانک اضافہ کر سکتی ہے۔"
+                : "Onions and tomatoes exhibit high price inelasticity in Pakistani urban centers. A 15% arrival drop can trigger a 40%+ auction price surge."}
             </p>
           </div>
 
@@ -76,9 +82,13 @@ export default function CopilotPage() {
             <div className="w-9 h-9 rounded-xl bg-[#EBE9F5] text-[#3730A3] flex items-center justify-center mb-3 border border-[#C7D2FE]">
               <Compass className="w-4 h-4 text-indigo-700" />
             </div>
-            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">Seasonal Harvest Waves</h4>
+            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">
+              {isUrdu ? "موسمی فصلوں کی لہریں" : "Seasonal Harvest Waves"}
+            </h4>
             <p className="text-xs text-[#55695C] leading-relaxed font-medium">
-              Sindh winter harvest arrives Dec–Feb; Punjab main crop hits in March–May; northern valleys (Swat, Quetta) supply the July–Oct monsoon window.
+              {isUrdu
+                ? "سندھ کی موسم سرما کی فصل دسمبر تا فروری آتی ہے؛ پنجاب کی مرکزی فصل مارچ تا مئی؛ جبکہ شمالی وادیوں (سوات، کوئٹہ) سے جولائی تا اکتوبر سپلائی حاصل ہوتی ہے۔"
+                : "Sindh winter harvest arrives Dec–Feb; Punjab main crop hits in March–May; northern valleys (Swat, Quetta) supply the July–Oct monsoon window."}
             </p>
           </div>
 
@@ -86,9 +96,13 @@ export default function CopilotPage() {
             <div className="w-9 h-9 rounded-xl bg-[#FAF8F3] text-[#853E06] flex items-center justify-center mb-3 border border-[#EAE4D8]">
               <Database className="w-4 h-4 text-amber-700" />
             </div>
-            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">Logistics &amp; Fuel Freight</h4>
+            <h4 className="font-extrabold text-[#14231B] text-sm mb-1">
+              {isUrdu ? "نقل و حمل اور ایندھن لاگت" : "Logistics & Fuel Freight"}
+            </h4>
             <p className="text-xs text-[#55695C] leading-relaxed font-medium">
-              Long-haul transit from Balochistan or Sindh adds ₨ 4–8/kg in diesel freight, creating natural inter-mandi geographic price differentials.
+              {isUrdu
+                ? "بلوچستان یا سندھ سے طویل فاصلے کی ترسیل میں 4 تا 8 روپے فی کلو ڈیزل فریٹ شامل ہوتا ہے، جس سے مختلف منڈیوں میں قدرتی جغرافیائی فرق پیدا ہوتا ہے۔"
+                : "Long-haul transit from Balochistan or Sindh adds ₨ 4–8/kg in diesel freight, creating natural inter-mandi geographic price differentials."}
             </p>
           </div>
         </div>

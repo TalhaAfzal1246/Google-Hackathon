@@ -149,6 +149,7 @@ export default function WatchdogPage() {
           records={filteredRecords}
           onSelectRecord={setSelectedRecord}
           selectedDate={selectedRecord?.date}
+          lang={lang}
         />
 
         {/* Decomposition Bar for Selected Record */}
@@ -158,6 +159,7 @@ export default function WatchdogPage() {
             date={selectedRecord.date}
             cropName={selectedRecord.crop_name}
             marketName={selectedRecord.market_name}
+            lang={lang}
           />
         )}
 
@@ -168,29 +170,31 @@ export default function WatchdogPage() {
               {isUrdu ? "غیر معمولی منافع خوری و قیمتوں کا تفصیلی ریکارڈ" : "Detected Spread Discrepancies & Gouging Episodes"}
             </h3>
             <span className="text-xs text-[#55695C] font-semibold">
-              Residual exceeds rolling P90 threshold
+              {isUrdu ? "اضافی منافع مارجن پی 90 حد سے تجاوز کرتا ہے" : "Residual exceeds rolling P90 threshold"}
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
+            <table className="w-full text-xs text-left" dir={isUrdu ? "rtl" : "ltr"}>
               <thead className="bg-[#FAF8F3] text-[#55695C] font-bold border-b border-[#EAE4D8]">
                 <tr>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Farmgate Paid</th>
-                  <th className="py-3 px-4">Wholesale Mandi</th>
-                  <th className="py-3 px-4">Retail City Price</th>
-                  <th className="py-3 px-4">Actual Spread</th>
-                  <th className="py-3 px-4">Normal Benchmark</th>
-                  <th className="py-3 px-4">Unexplained Gap</th>
-                  <th className="py-3 px-4">Inspect</th>
+                  <th className="py-3 px-4">{isUrdu ? "تاریخ" : "Date"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "کسان کو ملا" : "Farmgate Paid"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "ہول سیل منڈی" : "Wholesale Mandi"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "شہری ریٹیل قیمت" : "Retail City Price"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "حقیقی فرق" : "Actual Spread"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "معمول کا فرق" : "Normal Benchmark"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "غیر معمولی خلا" : "Unexplained Gap"}</th>
+                  <th className="py-3 px-4">{isUrdu ? "کارروائی" : "Inspect"}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#EAE4D8]">
                 {anomalyEpisodes.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="py-8 text-center text-[#7A8C80] font-medium">
-                      No cartel anomalies detected for this crop-mandi pair. Spreads are competitive.
+                      {isUrdu
+                        ? "اس فصل اور منڈی کے جوڑے میں کوئی غیر معمولی کٹوتی نہیں پائی گئی۔ مارجن مسابقتی ہے۔"
+                        : "No cartel anomalies detected for this crop-mandi pair. Spreads are competitive."}
                     </td>
                   </tr>
                 ) : (
@@ -205,25 +209,25 @@ export default function WatchdogPage() {
                         }`}
                         onClick={() => setSelectedRecord(rec)}
                       >
-                        <td className="py-3 px-4 font-mono font-medium text-[#14231B]">
+                        <td className="py-3 px-4 font-mono font-medium text-[#14231B]" dir="ltr">
                           {rec.date}
                         </td>
-                        <td className="py-3 px-4 font-mono font-bold text-[#0F3E2E]">
+                        <td className="py-3 px-4 font-mono font-bold text-[#0F3E2E]" dir="ltr">
                           ₨ {rec.farmgate_price}
                         </td>
-                        <td className="py-3 px-4 font-mono text-[#2A3B30]">
+                        <td className="py-3 px-4 font-mono text-[#2A3B30]" dir="ltr">
                           ₨ {rec.wholesale_price}
                         </td>
-                        <td className="py-3 px-4 font-mono text-[#3730A3]">
+                        <td className="py-3 px-4 font-mono text-[#3730A3]" dir="ltr">
                           ₨ {rec.retail_price}
                         </td>
-                        <td className="py-3 px-4 font-mono font-bold text-[#14231B]">
+                        <td className="py-3 px-4 font-mono font-bold text-[#14231B]" dir="ltr">
                           ₨ {rec.spread_pkr}
                         </td>
-                        <td className="py-3 px-4 font-mono text-[#55695C]">
+                        <td className="py-3 px-4 font-mono text-[#55695C]" dir="ltr">
                           ₨ {rec.normal_spread_pkr}
                         </td>
-                        <td className="py-3 px-4 font-mono font-bold text-[#991B1B]">
+                        <td className="py-3 px-4 font-mono font-bold text-[#991B1B]" dir="ltr">
                           +₨ {decomp.unexplainedSurplusPkr} ({decomp.unexplainedSurplusPct}%)
                         </td>
                         <td className="py-3 px-4">
@@ -231,7 +235,7 @@ export default function WatchdogPage() {
                             onClick={() => setSelectedRecord(rec)}
                             className="px-3 py-1 bg-[#FEE2E2] hover:bg-[#FECACA] text-[#991B1B] rounded-lg text-xs font-bold border border-[#FECACA]"
                           >
-                            Inspect
+                            {isUrdu ? "جائزہ" : "Inspect"}
                           </button>
                         </td>
                       </tr>
