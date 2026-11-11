@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Language, DICTIONARY } from "@/lib/i18n";
-import { Sparkles, Sprout, Store, ShieldAlert, HelpCircle, Info, Calendar } from "lucide-react";
+import { Sparkles, Sprout, Store, ShieldAlert, HelpCircle, Calendar } from "lucide-react";
 import MarketTicker from "@/components/MarketTicker";
 
 interface NavbarProps {
@@ -31,7 +31,6 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
     { href: "/market", label: isUrdu ? "منصفانہ منڈی" : "Live Exchange", icon: Store },
     { href: "/watchdog", label: isUrdu ? "آڑھتی واچ ڈاگ" : "Spread Watchdog", icon: ShieldAlert },
     { href: "/copilot", label: isUrdu ? "رسد و طلب AI" : "Supply & Demand AI", icon: HelpCircle },
-    { href: "/about", label: isUrdu ? "ماڈل شفافیت" : "Responsible AI", icon: Info },
   ];
 
   return (
