@@ -10,10 +10,13 @@ export async function geminiJSON<T>(
   fallback: T
 ): Promise<{ data: T; usedAI: boolean }> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+  const timeoutId = setTimeout(() => controller.abort(), 35000); // 35s timeout for mobile/wifi networks
+
+  const apiKey = process.env.GEMINI_API_KEY || SECRETS.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL || SECRETS.GEMINI_MODEL || "gemini-3.8-flash";
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${SECRETS.GEMINI_MODEL}:generateContent?key=${SECRETS.GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const res = await fetch(url, {
       method: "POST",
@@ -72,8 +75,11 @@ export async function geminiText(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 12000);
 
+  const apiKey = process.env.GEMINI_API_KEY || SECRETS.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL || SECRETS.GEMINI_MODEL || "gemini-3.8-flash";
+
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${SECRETS.GEMINI_MODEL}:generateContent?key=${SECRETS.GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const res = await fetch(url, {
       method: "POST",
