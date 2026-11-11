@@ -68,7 +68,7 @@ const MAUND_SHORTCUTS = [
 
 export default function FarmerPage() {
   const router = useRouter();
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLang] = useState<Language>("ur");
   const t = DICTIONARY[lang];
   const isUrdu = lang === "ur";
 

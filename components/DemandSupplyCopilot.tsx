@@ -23,7 +23,9 @@ export default function DemandSupplyCopilot({
 }: CopilotProps) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [activeVoiceLang, setActiveVoiceLang] = useState<"ur" | "en" | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+
   const [response, setResponse] = useState<{
     answer: string;
     answer_ur: string;
@@ -39,11 +41,21 @@ export default function DemandSupplyCopilot({
   // Stop audio on unmount
   useEffect(() => {
     return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
+      stopAudio();
     };
   }, []);
+
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setCurrentAudio(null);
+    }
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    setActiveVoiceLang(null);
+  };
 
   const suggestedQuestions = isUrdu
     ? [
@@ -62,10 +74,7 @@ export default function DemandSupplyCopilot({
   const handleAsk = async (queryText: string) => {
     if (!queryText.trim() || loading) return;
     setLoading(true);
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-    }
+    stopAudio();
 
     try {
       const res = await fetch("/api/copilot", {
@@ -92,35 +101,68 @@ export default function DemandSupplyCopilot({
     }
   };
 
-  const handleToggleAudio = () => {
+  const fallbackSpeechSynthesis = (text: string, targetLang: "ur" | "en") => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("Audio speech synthesis is not supported on this browser.");
+      setActiveVoiceLang(null);
       return;
     }
-
-    if (isPlayingAudio) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-      return;
-    }
-
     window.speechSynthesis.cancel();
-
-    const spokenText = isUrdu
-      ? (response?.answer_ur || response?.answer || "")
-      : (response?.answer || "");
-
-    if (!spokenText) return;
-
-    const utterance = new SpeechSynthesisUtterance(spokenText);
-    utterance.lang = isUrdu ? "ur-PK" : "en-US";
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = targetLang === "ur" ? "ur-PK" : "en-US";
     utterance.rate = 0.92;
 
-    utterance.onend = () => setIsPlayingAudio(false);
-    utterance.onerror = () => setIsPlayingAudio(false);
+    const voices = window.speechSynthesis.getVoices();
+    const match = voices.find((v) =>
+      targetLang === "ur"
+        ? v.lang.startsWith("ur") || v.name.toLowerCase().includes("urdu") || v.lang.startsWith("hi")
+        : v.lang.startsWith("en")
+    );
+    if (match) utterance.voice = match;
+
+    utterance.onend = () => setActiveVoiceLang(null);
+    utterance.onerror = () => setActiveVoiceLang(null);
 
     window.speechSynthesis.speak(utterance);
-    setIsPlayingAudio(true);
+  };
+
+  const playVoice = (targetLang: "ur" | "en") => {
+    if (activeVoiceLang === targetLang) {
+      stopAudio();
+      return;
+    }
+
+    stopAudio();
+
+    const spokenText =
+      targetLang === "ur"
+        ? response?.answer_ur || response?.answer || ""
+        : response?.answer || "";
+
+    if (!spokenText.trim()) return;
+
+    setActiveVoiceLang(targetLang);
+
+    // Primary: Google Neural Voice API via /api/voice
+    try {
+      const audioUrl = `/api/voice?lang=${targetLang}&text=${encodeURIComponent(spokenText)}`;
+      const audio = new Audio(audioUrl);
+      setCurrentAudio(audio);
+
+      audio.onended = () => {
+        setActiveVoiceLang(null);
+        setCurrentAudio(null);
+      };
+
+      audio.onerror = () => {
+        fallbackSpeechSynthesis(spokenText, targetLang);
+      };
+
+      audio.play().catch(() => {
+        fallbackSpeechSynthesis(spokenText, targetLang);
+      });
+    } catch {
+      fallbackSpeechSynthesis(spokenText, targetLang);
+    }
   };
 
   return (
@@ -210,27 +252,50 @@ export default function DemandSupplyCopilot({
               </span>
             </div>
 
-            {/* Audio Readout */}
-            <button
-              onClick={handleToggleAudio}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
-                isPlayingAudio
-                  ? "bg-rose-600 text-white animate-pulse"
-                  : "bg-slate-900 hover:bg-slate-800 text-white"
-              }`}
-            >
-              {isPlayingAudio ? (
-                <>
-                  <VolumeX className="w-3.5 h-3.5" />
-                  <span>{isUrdu ? "روکیں" : "Stop"}</span>
-                </>
-              ) : (
-                <>
-                  <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{isUrdu ? "🔊 جواب سنیں" : "🔊 Listen Answer"}</span>
-                </>
-              )}
-            </button>
+            {/* Audio Readout Buttons for Copilot (Urdu & English) */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => playVoice("ur")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                  activeVoiceLang === "ur"
+                    ? "bg-emerald-700 text-white ring-2 ring-emerald-400 animate-pulse"
+                    : "bg-emerald-900 hover:bg-emerald-800 text-white"
+                }`}
+              >
+                {activeVoiceLang === "ur" ? (
+                  <>
+                    <VolumeX className="w-3.5 h-3.5 text-amber-300" />
+                    <span>⏹ آواز بند کریں</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-3.5 h-3.5 text-amber-300" />
+                    <span>🔊 اردو میں سنیں</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => playVoice("en")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  activeVoiceLang === "en"
+                    ? "bg-indigo-700 text-white ring-2 ring-indigo-400 animate-pulse"
+                    : "bg-slate-900 hover:bg-slate-800 text-white"
+                }`}
+              >
+                {activeVoiceLang === "en" ? (
+                  <>
+                    <VolumeX className="w-3.5 h-3.5 text-indigo-300" />
+                    <span>⏹ Stop</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-3.5 h-3.5 text-slate-300" />
+                    <span>🔊 English</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Key Drivers */}
@@ -246,11 +311,11 @@ export default function DemandSupplyCopilot({
             ))}
           </div>
 
-          {/* Urdu summary if available */}
+          {/* Urdu summary */}
           {response.answer_ur && (
             <div className="mb-3 p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs sm:text-sm text-emerald-950 font-urdu leading-relaxed">
               <div className="font-bold mb-1 text-emerald-900 flex items-center gap-1">
-                <span>🌾 اردو تجزیہ:</span>
+                <span>🌾 اردو خلاصہ:</span>
               </div>
               {response.answer_ur}
             </div>

@@ -9,7 +9,6 @@ import {
   Clock,
   ShieldCheck,
   ArrowRight,
-  Wheat,
   Volume2,
   VolumeX,
   Sparkles,
@@ -39,7 +38,9 @@ export default function VerdictCard({
   marketName = "Lahore (Badami Bagh)",
   marketNameUr = "لاہور (بادامی باغ)",
 }: VerdictCardProps) {
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [activeVoiceLang, setActiveVoiceLang] = useState<"ur" | "en" | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+
   const t = DICTIONARY[lang];
   const isUrdu = lang === "ur";
   const isHold = verdict.bestStep > 0;
@@ -53,51 +54,92 @@ export default function VerdictCard({
   // Stop speech when unmounting
   useEffect(() => {
     return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
+      stopAudio();
     };
   }, []);
 
-  const handleToggleAudio = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("Audio speech synthesis is not supported on this browser.");
-      return;
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setCurrentAudio(null);
     }
-
-    if (isPlayingAudio) {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
+    }
+    setActiveVoiceLang(null);
+  };
+
+  const fallbackSpeechSynthesis = (text: string, targetLang: "ur" | "en") => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      setActiveVoiceLang(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = targetLang === "ur" ? "ur-PK" : "en-US";
+    utterance.rate = 0.92;
+
+    const voices = window.speechSynthesis.getVoices();
+    const match = voices.find((v) =>
+      targetLang === "ur"
+        ? v.lang.startsWith("ur") || v.name.toLowerCase().includes("urdu") || v.lang.startsWith("hi")
+        : v.lang.startsWith("en")
+    );
+    if (match) utterance.voice = match;
+
+    utterance.onend = () => setActiveVoiceLang(null);
+    utterance.onerror = () => setActiveVoiceLang(null);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const playVoice = (targetLang: "ur" | "en") => {
+    if (activeVoiceLang === targetLang) {
+      stopAudio();
       return;
     }
 
-    window.speechSynthesis.cancel();
+    stopAudio();
 
-    // Prepare clear, conversational script
-    let spokenText = "";
-    if (isUrdu) {
+    let textToSpeak = "";
+    if (targetLang === "ur") {
       if (isHold) {
-        spokenText = `السلام علیکم کسان بھائی! آج ${marketNameUr} میں ${cropNameUr} کا بھاؤ ${todayPrice} روپے کلو یعنی ${maundPriceToday} روپے فی من ہے۔ ہمارا مشورہ ہے کہ آپ اپنی فصل ${verdict.bestStep} دن روک لیں۔ متوقع ریٹ ${todayPrice + verdict.gain} روپے کلو ہو جائے گا۔ کولڈ سٹوریج کا خرچ نکالنے کے بعد آپ کے ${maunds} من پر تقریباً ${totalExtraCash.toLocaleString()} روپے اضافی منافع ہوگا۔`;
+        textToSpeak = `السلام علیکم کسان بھائی! آج ${marketNameUr} میں ${cropNameUr} کا بھاؤ ${todayPrice} روپے کلو یعنی ${maundPriceToday} روپے فی من ہے۔ ہمارا مشورہ ہے کہ آپ اپنی فصل ${verdict.bestStep} دن روک لیں۔ متوقع ریٹ ${todayPrice + verdict.gain} روپے کلو ہو جائے گا۔ کولڈ سٹوریج کا خرچ نکالنے کے بعد آپ کے ${maunds} من پر تقریباً ${totalExtraCash.toLocaleString()} روپے اضافی منافع ہوگا۔`;
       } else {
-        spokenText = `السلام علیکم کسان بھائی! آج ${marketNameUr} میں ${cropNameUr} کا بھاؤ ${todayPrice} روپے کلو یعنی ${maundPriceToday} روپے فی من ہے۔ ہمارا مشورہ ہے کہ آپ آج ہی فصل بیچ دیں۔ منڈی میں رسد زیادہ ہے اور فصل روکنے سے سٹوریج اور خراب ہونے کا نقصان ہوگا۔`;
+        textToSpeak = `السلام علیکم کسان بھائی! آج ${marketNameUr} میں ${cropNameUr} کا بھاؤ ${todayPrice} روپے کلو یعنی ${maundPriceToday} روپے فی من ہے۔ ہمارا مشورہ ہے کہ آپ آج ہی فصل بیچ دیں۔ منڈی میں رسد زیادہ ہے اور فصل روکنے سے سٹوریج اور خراب ہونے کا نقصان ہوگا۔`;
       }
     } else {
       if (isHold) {
-        spokenText = `Hello respected farmer. Today's rate for ${cropName} in ${marketName} is ₨ ${todayPrice} per kilogram, or ₨ ${maundPriceToday} per maund. Our recommendation is to hold your harvest for ${verdict.bestStep} days. The price is projected to reach ₨ ${todayPrice + verdict.gain} per kilogram. For your ${maunds} maunds, your estimated additional profit will be ₨ ${totalExtraCash.toLocaleString()}.`;
+        textToSpeak = `Hello respected farmer. Today's rate for ${cropName} in ${marketName} is ₨ ${todayPrice} per kilogram, or ₨ ${maundPriceToday} per maund. Our recommendation is to hold your harvest for ${verdict.bestStep} days. The price is projected to reach ₨ ${todayPrice + verdict.gain} per kilogram. For your ${maunds} maunds, your estimated additional profit will be ₨ ${totalExtraCash.toLocaleString()}.`;
       } else {
-        spokenText = `Hello respected farmer. Today's rate for ${cropName} in ${marketName} is ₨ ${todayPrice} per kilogram. Our recommendation is to sell immediately. Mandi arrivals are elevated and post-harvest storage costs will outweigh projected price gains.`;
+        textToSpeak = `Hello respected farmer. Today's rate for ${cropName} in ${marketName} is ₨ ${todayPrice} per kilogram. Our recommendation is to sell immediately. Mandi arrivals are elevated and post-harvest storage costs will outweigh projected price gains.`;
       }
     }
 
-    const utterance = new SpeechSynthesisUtterance(spokenText);
-    utterance.lang = isUrdu ? "ur-PK" : "en-US";
-    utterance.rate = 0.92; // Slightly measured and friendly pace
+    setActiveVoiceLang(targetLang);
 
-    utterance.onend = () => setIsPlayingAudio(false);
-    utterance.onerror = () => setIsPlayingAudio(false);
+    // Primary: Google Cloud / Google Translate High-Fidelity Audio API
+    try {
+      const audioUrl = `/api/voice?lang=${targetLang}&text=${encodeURIComponent(textToSpeak)}`;
+      const audio = new Audio(audioUrl);
+      setCurrentAudio(audio);
 
-    window.speechSynthesis.speak(utterance);
-    setIsPlayingAudio(true);
+      audio.onended = () => {
+        setActiveVoiceLang(null);
+        setCurrentAudio(null);
+      };
+
+      audio.onerror = () => {
+        fallbackSpeechSynthesis(textToSpeak, targetLang);
+      };
+
+      audio.play().catch(() => {
+        fallbackSpeechSynthesis(textToSpeak, targetLang);
+      });
+    } catch {
+      fallbackSpeechSynthesis(textToSpeak, targetLang);
+    }
   };
 
   return (
@@ -108,7 +150,7 @@ export default function VerdictCard({
           : "border-emerald-400 bg-gradient-to-br from-emerald-50 via-white to-emerald-100/40"
       }`}
     >
-      {/* Top Tag & Audio Readout Button */}
+      {/* Top Tag & Audio Readout Buttons */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2">
           <span
@@ -128,29 +170,56 @@ export default function VerdictCard({
           </span>
         </div>
 
-        {/* 🔊 Audio Voice Playback Button */}
-        <button
-          onClick={handleToggleAudio}
-          type="button"
-          className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-extrabold transition-all shadow-sm active:scale-95 ${
-            isPlayingAudio
-              ? "bg-rose-600 text-white animate-pulse"
-              : "bg-slate-900 hover:bg-slate-800 text-white"
-          }`}
-          title={isUrdu ? "آواز میں سنیں" : "Listen in Voice"}
-        >
-          {isPlayingAudio ? (
-            <>
-              <VolumeX className="w-4 h-4" />
-              <span>{isUrdu ? "آواز بند کریں" : "Stop Voice"}</span>
-            </>
-          ) : (
-            <>
-              <Volume2 className="w-4 h-4 text-amber-400" />
-              <span>{isUrdu ? "🔊 مشورہ آواز میں سنیں (اردو)" : "🔊 Listen Spoken Advice"}</span>
-            </>
-          )}
-        </button>
+        {/* 🔊 Explicit Urdu & English Audio Buttons */}
+        <div className="flex items-center gap-2">
+          {/* Urdu Voice Button */}
+          <button
+            onClick={() => playVoice("ur")}
+            type="button"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black transition-all shadow-sm active:scale-95 ${
+              activeVoiceLang === "ur"
+                ? "bg-emerald-700 text-white ring-2 ring-emerald-400 animate-pulse"
+                : "bg-emerald-900 hover:bg-emerald-800 text-white"
+            }`}
+            title="اردو میں سنیں"
+          >
+            {activeVoiceLang === "ur" ? (
+              <>
+                <VolumeX className="w-4 h-4 text-amber-300" />
+                <span>⏹ آواز بند کریں</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-4 h-4 text-amber-300" />
+                <span>🔊 اردو میں سنیں (Urdu Voice)</span>
+              </>
+            )}
+          </button>
+
+          {/* English Voice Button */}
+          <button
+            onClick={() => playVoice("en")}
+            type="button"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm active:scale-95 ${
+              activeVoiceLang === "en"
+                ? "bg-indigo-700 text-white ring-2 ring-indigo-400 animate-pulse"
+                : "bg-slate-900 hover:bg-slate-800 text-white"
+            }`}
+            title="Listen in English"
+          >
+            {activeVoiceLang === "en" ? (
+              <>
+                <VolumeX className="w-4 h-4 text-indigo-300" />
+                <span>⏹ Stop</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-4 h-4 text-slate-300" />
+                <span>🔊 English</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Main Big Verdict Headline */}
